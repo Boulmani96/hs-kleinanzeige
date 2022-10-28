@@ -1,7 +1,7 @@
 server:
     # FIXME: add application context-path settings                          #
-  # servlet:                                                              #
-  #    context-path:                                                      #
+    servlet:                                                              #
+       context-path: /hs-kleinanzeigen/                                             #
     port: 8081
 
     # FIXME: use the following credentials for your sql connection          #
