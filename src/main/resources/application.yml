@@ -17,5 +17,5 @@ server:
   #    org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl #
   
     # FIXME: use the following properties to enable actuator endpoints      #
-  # management.endpoints.web.exposure.include: "*"                        #
+management.endpoints.web.exposure.include: "*"                        #
     
