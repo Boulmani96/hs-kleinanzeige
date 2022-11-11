@@ -1,24 +1,21 @@
 server:
-    servlet:                                                            
-       context-path: /hs-kleinanzeigen/                                        
-    port: 8081
-
-management.endpoints.web.exposure.include: "*"
+  servlet:
+    context-path: /hs-kleinanzeigen/
+  port: 8081
 
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:4406/KLEINANZEIGEN?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: start01
   sql:
     init:
       mode: always
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
-    properties:
-      hibernate: check_nullability=true
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:4406/KLEINANZEIGEN?allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: start01
+management.endpoints.web.exposure.include: "*"

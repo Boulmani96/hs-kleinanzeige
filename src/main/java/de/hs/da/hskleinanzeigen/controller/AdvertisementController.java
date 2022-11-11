@@ -5,6 +5,8 @@ import de.hs.da.hskleinanzeigen.domain.Category;
 import de.hs.da.hskleinanzeigen.domain.NotFoundException;
 import de.hs.da.hskleinanzeigen.repository.AdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -19,14 +21,19 @@ public class AdvertisementController{
 
     @PostMapping(path="/api/advertisements") // Map ONLY POST Requests
     @ResponseBody
-    public AD addNewAdvertisement (@RequestBody AD advertisement) {
-        // @ResponseBody means the returned String is the response, not a view name
-        if(categoryController.getCategoryByID(advertisement.getCategory().getId()).isEmpty()){
-            throw new NotFoundException("Category with the id: "+advertisement.getCategory().getId()+" is not found");
+    public ResponseEntity<AD> addNewAdvertisement (@RequestBody AD advertisement) {
+        if(advertisement.getType() == null || advertisement.getCategory() == null || advertisement.getCategory().getID() == null || advertisement.getTitle() == null
+                || advertisement.getDescription() == null){
+            return new ResponseEntity<>(advertisement, HttpStatus.BAD_REQUEST);
         }
-        Category category = categoryController.getCategoryByID(advertisement.getCategory().getId()).get();
+        // @ResponseBody means the returned String is the response, not a view name
+        if(categoryController.getCategoryByID(advertisement.getCategory().getID()).isEmpty()){
+            return new ResponseEntity<>(advertisement, HttpStatus.BAD_REQUEST);
+        }
+        Category category = categoryController.getCategoryByID(advertisement.getCategory().getID()).get();
         advertisement.setCategory(category);
-        return advertisementRepository.save(advertisement);
+        advertisementRepository.save(advertisement);
+        return new ResponseEntity<>(advertisement, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/advertisements/{id}")
