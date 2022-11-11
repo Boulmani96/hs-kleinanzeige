@@ -1,17 +1,23 @@
 package de.hs.da.hskleinanzeigen.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "CATEGORY")
+@JsonIgnoreProperties({"parent"})
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer ID;
 
     private String Name;
 
+    @JsonIgnore
     @ManyToOne
     private Category parent;
 
@@ -19,17 +25,17 @@ public class Category {
 
     }
 
-    public Category(String name, Category category){
+    public Category(String name, Category parent){
         this.Name = name;
-        this.parent = category;
+        this.parent = parent;
     }
 
-    public int getId() {
-        return this.id;
+    public Integer getID() {
+        return this.ID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setID(Integer id) {
+        this.ID = id;
     }
 
     public String getName() {
@@ -40,12 +46,14 @@ public class Category {
     	this.Name = name;
     }
 
+    @JsonProperty("parent")
     public Category getParent() {
         return parent;
     }
 
-    public void setParent(Category category) {
-        this.parent = category;
+    @JsonProperty("parent")
+    public void setParent(Category parent) {
+        this.parent = parent;
     }
 
     @Override
@@ -57,20 +65,20 @@ public class Category {
             return false;
         }
         Category category = (Category) o;
-        return id == category.id;
+        return ID == category.ID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(ID);
     }
 
     @Override
     public String toString() {
         return "Category{" +
-                "id=" + id +
+                "id=" + ID +
                 ", Name='" + Name + '\'' +
-                ", category=" + parent +
+                ", parent=" + parent +
                 '}';
     }
 }

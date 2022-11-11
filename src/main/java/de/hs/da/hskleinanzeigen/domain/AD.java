@@ -1,5 +1,9 @@
 package de.hs.da.hskleinanzeigen.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -7,14 +11,22 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "AD")
+@JsonIgnoreProperties({"Created"})
 public class AD {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer ID;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Type Type;
+
+    private Integer Price;
+
+    private String Location;
+
+    @JsonIgnore
+    private LocalDateTime Created;
 
     @ManyToOne
     private Category category;
@@ -25,32 +37,25 @@ public class AD {
     @Column(nullable = false)
     private String Description;
 
-    private int Price;
-
-    private String Location;
-
-    private Timestamp Created;
-
     public AD() {
 
     }
 
-    public AD(Type type, Category category, String title, String description, int price, String location, Timestamp created) {
+    public AD(Type type, Category category, String title, String description, Integer price, String location) {
         this.Type = type;
         this.category = category;
         this.Title = title;
         this.Description = description;
         this.Price = price;
         this.Location = location;
-        this.Created = created;
     }
 
-    public int getId() {
-        return this.id;
+    public Integer getID() {
+        return this.ID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setID(Integer id) {
+        this.ID = id;
     }
 
     public Category getCategory() {
@@ -85,11 +90,11 @@ public class AD {
     	this.Description = description;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return this.Price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
     	this.Price = price;
     }
 
@@ -101,11 +106,13 @@ public class AD {
     	this.Location = location;
     }
 
-    public Timestamp getCreated() {
+    @JsonProperty("Created")
+    public LocalDateTime getCreated() {
         return this.Created;
     }
 
-    public void setCreated(Timestamp created) {
+    @JsonProperty("Created")
+    public void setCreated(LocalDateTime created) {
     	this.Created = created;
     }
 
@@ -118,18 +125,18 @@ public class AD {
             return false;
         }
         AD ad = (AD) o;
-        return id == ad.id;
+        return ID == ad.ID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(ID);
     }
 
     @Override
     public String toString() {
         return "AD{" +
-                "id=" + id +
+                "id=" + ID +
                 ", Type=" + Type +
                 ", category=" + category +
                 ", Title='" + Title + '\'' +

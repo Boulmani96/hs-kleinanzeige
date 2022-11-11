@@ -5,7 +5,6 @@ import de.hs.da.hskleinanzeigen.domain.NotFoundException;
 import de.hs.da.hskleinanzeigen.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +18,11 @@ public class CategoryController {
     @ResponseBody
     public Category addNewCategory(@RequestBody Category category) {
         if(category.getParent() != null){
-            if(getCategoryByID(category.getParent().getId()).isEmpty()){
-                throw new NotFoundException("Category with the id: "+getCategoryByID(category.getParent().getId()).get().getParent().getId()+" is not found");
+            //System.out.println(category.getParent().getName());
+            if(getCategoryByID(category.getParent().getID()).isEmpty()) {
+                throw new NotFoundException("Category with the id: " + getCategoryByID(category.getParent().getID()).get().getParent().getID() + " is not found");
             }
-            category.setParent(getCategoryByID(category.getParent().getId()).get());
+            category.setParent(getCategoryByID(category.getParent().getID()).get());
         }
         return categoryRepository.save(category);
     }
@@ -33,7 +33,7 @@ public class CategoryController {
         if(category.isEmpty()){
             throw new NotFoundException("Category with the id: "+id+" is not found");
         }
-        return categoryRepository.findById(id);
+        return category;
     }
 
     @GetMapping(path="/api/category/all")
