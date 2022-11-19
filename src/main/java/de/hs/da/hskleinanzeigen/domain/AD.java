@@ -30,8 +30,16 @@ public class AD {
     @ManyToOne
     private Category category;
 
-   // @ManyToOne
-    //private User user;
+    @ManyToOne
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Column(nullable = false)
     private String Title;
@@ -43,10 +51,10 @@ public class AD {
 
     }
 
-    public AD(Type type, Category category, String title, String description, Integer price, String location) {
+    public AD(Type type, Category category,User user, String title, String description, Integer price, String location) {
         this.Type = type;
         this.category = category;
-     //   this.user=user;
+        this.user=user;
         this.Title = title;
         this.Description = description;
         this.Price = price;
