@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -31,6 +30,9 @@ public class AD {
     @ManyToOne
     private Category category;
 
+   // @ManyToOne
+    //private User user;
+
     @Column(nullable = false)
     private String Title;
 
@@ -44,6 +46,7 @@ public class AD {
     public AD(Type type, Category category, String title, String description, Integer price, String location) {
         this.Type = type;
         this.category = category;
+     //   this.user=user;
         this.Title = title;
         this.Description = description;
         this.Price = price;
