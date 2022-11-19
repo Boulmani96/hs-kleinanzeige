@@ -1,5 +1,6 @@
 package de.hs.da.hskleinanzeigen.controller;
 
+import de.hs.da.hskleinanzeigen.domain.Category;
 import de.hs.da.hskleinanzeigen.domain.NotFoundException;
 import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.repository.UserRepository;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,7 +39,13 @@ public class UserController {
         if(user.isEmpty()){
             throw new NotFoundException("Category with the id: "+id+" is not found");
         }
-        return user;
+        return userRepository.findById(id);
+    }
+    @GetMapping(path="/api/users")
+    @ResponseBody
+    public List<User> getAllUsers() {
+        // This returns a JSON or XML with the advertisement
+        return userRepository.findAll();
     }
 
 }
