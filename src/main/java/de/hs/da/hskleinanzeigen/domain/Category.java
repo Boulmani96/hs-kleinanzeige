@@ -15,7 +15,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ID;
 
-    private String Name;
+    private String name;
 
     @JsonIgnore
     @ManyToOne
@@ -26,7 +26,7 @@ public class Category {
     }
 
     public Category(String name, Category parent){
-        this.Name = name;
+        this.name = name;
         this.parent = parent;
     }
 
@@ -39,11 +39,11 @@ public class Category {
     }
 
     public String getName() {
-        return this.Name;
+        return this.name;
     }
 
     public void setName(String name) {
-    	this.Name = name;
+    	this.name = name;
     }
 
     @JsonProperty("parent")
@@ -77,7 +77,7 @@ public class Category {
     public String toString() {
         return "Category{" +
                 "id=" + ID +
-                ", Name='" + Name + '\'' +
+                ", Name='" + name + '\'' +
                 ", parent=" + parent +
                 '}';
     }

@@ -1,7 +1,5 @@
 package de.hs.da.hskleinanzeigen.controller;
 
-import de.hs.da.hskleinanzeigen.domain.Category;
-import de.hs.da.hskleinanzeigen.domain.NotFoundException;
 import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,35 +15,37 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping(path="/api/user") // Map ONLY POST Requests
-    @ResponseBody
+    @PostMapping(path="/api/users")
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
-        if(user.getEmail() == null || user.getPassword() == null || user.getFirst_name() == null|| user.getLast_name() == null || user.getPhone() == null|| user.getLocation() == null){
+        if(user.getEmail() == null || user.getFirstName() == null||
+                user.getLastName() == null || user.getPhone() == null|| user.getLocation() == null){
             return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
         }
-
-        /*if(category.getParent() != null ){
-            //System.out.println(category.getParent().getName());
-            if(getCategoryByID(category.getParent().getID()).isEmpty()) {
-                throw new NotFoundException("Category with the id: " + getCategoryByID(category.getParent().getID()).get().getParent().getID() + " is not found");
-            }
-            category.setParent(getCategoryByID(category.getParent().getID()).get());
-        }*/
+        if (userRepository.findByEmail(user.getEmail()) != null){
+            return new ResponseEntity<>(user, HttpStatus.CONFLICT);
+        }
+        userRepository.save(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
-    @GetMapping("/api/user/{id}")
-    public Optional<User> getUSERByID(@PathVariable int id) {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isEmpty()){
-            throw new NotFoundException("Category with the id: "+id+" is not found");
+
+    @GetMapping("/api/users/{id}")
+    public ResponseEntity<User> getUserByID(@PathVariable int id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        User user;
+        if(optionalUser.isEmpty()){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return userRepository.findById(id);
-    }
-    @GetMapping(path="/api/users")
-    @ResponseBody
-    public List<User> getAllUsers() {
-        // This returns a JSON or XML with the advertisement
-        return userRepository.findAll();
+        user = optionalUser.get();
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @GetMapping("/api/users/email")
+    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
+        return new ResponseEntity<>(userRepository.findByEmail(email), HttpStatus.OK);
+    }
+
+    @GetMapping(path="/api/users/all")
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }

@@ -6,109 +6,144 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "USER")
-@JsonIgnoreProperties({"Created"})
+@JsonIgnoreProperties({"Created", "password"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Integer id;
 
     @Column(nullable = false)
-    private String Email;
+    private String email;
 
-    @Column(nullable = false)
-    private String Password;
+    @JsonIgnore
+    private String password;
 
-    private String First_name;
+    @Column(name = "first_Name")
+    private String firstName;
 
-    private String Last_name;
+    @Column(name = "last_Name")
+    private String lastName;
 
-    private String Phone;
+    private String phone;
 
-    private String Location;
+    private String location;
 
     @JsonIgnore
     private LocalDateTime Created;
 
-
     public User(String email, String password, String first_name, String last_name, String phone, String location) {
-        this.Email = email;
-        this.Password = password;
-        this.First_name=first_name;
-        this.Last_name = last_name;
-        this.Phone = phone;
-        this.Location = location;
+        this.email = email;
+        this.password = password;
+        this.firstName = first_name;
+        this.lastName = last_name;
+        this.phone = phone;
+        this.location = location;
     }
 
     public User() {
 
     }
 
-    public Long getID() {
-        return ID;
+    public Integer getId() {
+        return id;
     }
 
-    public void setID(Long id) {
-        this.ID = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
+    @JsonProperty("password")
     public String getPassword() {
-        return Password;
+        return password;
     }
 
+    @JsonProperty("password")
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
-    public String getFirst_name() {
-        return First_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        First_name = first_name;
+    public void setFirstName(String first_name) {
+        firstName = first_name;
     }
 
-    public String getLast_name() {
-        return Last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        Last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhone() {
-        return Phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
-        Phone = phone;
+        this.phone = phone;
     }
 
     public String getLocation() {
-        return Location;
+        return location;
     }
 
     public void setLocation(String location) {
-        Location = location;
+        this.location = location;
     }
 
     @JsonProperty("Created")
     public LocalDateTime getCreated() {
         return Created;
     }
+
     @JsonProperty("Created")
     public void setCreated(LocalDateTime created) {
         Created = created;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "ID=" + id +
+                ", Email='" + email + '\'' +
+                ", Password='" + password + '\'' +
+                ", First_name='" + firstName + '\'' +
+                ", Last_name='" + lastName + '\'' +
+                ", Phone='" + phone + '\'' +
+                ", Location='" + location + '\'' +
+                ", Created=" + Created +
+                '}';
+    }
 }

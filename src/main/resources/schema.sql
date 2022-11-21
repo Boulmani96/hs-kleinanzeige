@@ -12,18 +12,20 @@ create table if not exists CATEGORY
     primary key (ID),
     FOREIGN key (PARENT_ID) REFERENCES CATEGORY(ID)
 );
+
 create table if not exists USER
 (
     ID         int AUTO_INCREMENT ,
-    EMAIL      VARCHAR(60)  not null ,
-    PASSWORD   VARCHAR(60)      not null ,
+    EMAIL      VARCHAR(60) not null ,
+    PASSWORD   VARCHAR(60) ,
     FIRST_NAME varchar(60) comment '',
     LAST_NAME  varchar(60) comment '',
     PHONE      varchar(60) comment '',
     LOCATION   varchar(60) comment '',
-    CREATED    TIMESTAMP  NOT NULL  comment '' ,
+    CREATED    TIMESTAMP comment '' ,
     primary key (ID)
 );
+
 create table if not exists AD
 (
     ID                   int AUTO_INCREMENT comment '',
