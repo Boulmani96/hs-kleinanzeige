@@ -2,7 +2,7 @@ drop table if exists AD;
 
 drop table if exists CATEGORY;
 
-drop table if exists USER;
+drop table if exists "USER";
 
 create table if not exists CATEGORY
 (
@@ -13,7 +13,7 @@ create table if not exists CATEGORY
     FOREIGN key (PARENT_ID) REFERENCES CATEGORY(ID)
 );
 
-create table if not exists USER
+create table if not exists "USER"
 (
     ID         int AUTO_INCREMENT ,
     EMAIL      VARCHAR(60) not null ,
