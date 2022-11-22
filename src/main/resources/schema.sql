@@ -1,10 +1,10 @@
-drop table if exists AD;
+drop table if exists "AD";
 
-drop table if exists CATEGORY;
+drop table if exists "CATEGORY";
 
 drop table if exists "USER";
 
-create table if not exists CATEGORY
+create table if not exists "CATEGORY"
 (
     ID                  int not null AUTO_INCREMENT comment '',
     PARENT_ID           int null comment '',
@@ -13,7 +13,7 @@ create table if not exists CATEGORY
     FOREIGN key (PARENT_ID) REFERENCES CATEGORY(ID)
 );
 
-create table if not exists USER
+create table if not exists "USER"
 (
     ID         int AUTO_INCREMENT ,
     EMAIL      VARCHAR(60) not null ,
@@ -26,7 +26,7 @@ create table if not exists USER
     primary key (ID)
 );
 
-create table if not exists AD
+create table if not exists "AD"
 (
     ID                   int AUTO_INCREMENT comment '',
     CATEGORY_ID          int not null DEFAULT '0' comment '',
