@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "USER")
 @JsonIgnoreProperties({"Created", "password"})
-public class User extends BaseTimeEntity{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -22,10 +22,10 @@ public class User extends BaseTimeEntity{
     @JsonIgnore
     private String password;
 
-    //@Column(name = "first_Name")
+    @Column(name = "first_Name")
     private String firstName;
 
-  //  @Column(name = "last_Name")
+    @Column(name = "last_Name")
     private String lastName;
 
     private String phone;
