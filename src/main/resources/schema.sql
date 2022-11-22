@@ -2,7 +2,7 @@ drop table if exists AD;
 
 drop table if exists CATEGORY;
 
-drop table if exists USER CASCADE;
+drop table if exists USER;
 
 create table if not exists CATEGORY
 (

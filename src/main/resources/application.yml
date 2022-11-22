@@ -9,6 +9,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:4406/KLEINANZEIGEN?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: start01
+    generate-unique-name: false
   sql:
     init:
       mode: always
@@ -18,4 +19,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+    properties:
+      hibernate:
+        globally_quoted_identifiers=true:
 management.endpoints.web.exposure.include: "*"
