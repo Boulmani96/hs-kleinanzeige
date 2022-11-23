@@ -54,7 +54,7 @@ public class AD {
     public AD(Type type, Category category,User user, String title, String description, Integer price, String location) {
         this.Type = type;
         this.category = category;
-        this.user=user;
+        this.user = user;
         this.Title = title;
         this.Description = description;
         this.Price = price;
