@@ -3,8 +3,12 @@ package de.hs.da.hskleinanzeigen.controller;
 import de.hs.da.hskleinanzeigen.domain.AD;
 import de.hs.da.hskleinanzeigen.domain.Category;
 import de.hs.da.hskleinanzeigen.domain.NotFoundException;
+import de.hs.da.hskleinanzeigen.domain.Type;
 import de.hs.da.hskleinanzeigen.repository.AdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,10 +50,37 @@ public class AdvertisementController{
         return advertisementRepository.findById(id);
     }
 
-    @GetMapping(path="/api/advertisements/all")
+    @GetMapping(path="/api/advertisements")
     @ResponseBody
-    public List<AD> getAllAdvertisement() {
-        // This returns a JSON or XML with the advertisement
-        return advertisementRepository.findAll();
+    public ResponseEntity<Page> getAlladvertisements(@RequestParam(required = false) Type type,@RequestParam(required = false , defaultValue = "-1") int category,@RequestParam(required = false , defaultValue = "-1") int priceFrom,@RequestParam(required = false, defaultValue = "-1") int priceTo,@RequestParam(defaultValue = "-1") int pageStart,@RequestParam(defaultValue = "-1") int pageSize) {
+        if(pageSize < 0 || pageStart < 0){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        PageRequest pr = PageRequest.of(pageStart, pageSize );
+        List<AD> filteredList = advertisementRepository.findAll();
+
+        if(type != null){
+            List<AD> filterType =  advertisementRepository.findByType(type,pr);
+            filteredList.retainAll(filterType);
+        }
+
+        if(category != -1){
+            List<AD> filterCategory =  advertisementRepository.findByCategory_ID(category,pr);
+            filteredList.retainAll(filterCategory);
+        }
+
+        if(priceFrom != -1 && priceTo != -1){
+            List<AD> filterPriceFromTo =  advertisementRepository.findByPriceFromTo(priceFrom,priceTo,pr);
+            filteredList.retainAll(filterPriceFromTo);
+        }
+
+        if (filteredList.isEmpty())
+        {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
+        Page<AD> page = new PageImpl<>(filteredList);
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 }

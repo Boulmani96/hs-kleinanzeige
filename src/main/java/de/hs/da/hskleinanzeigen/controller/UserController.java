@@ -3,11 +3,13 @@ package de.hs.da.hskleinanzeigen.controller;
 import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -44,8 +46,17 @@ public class UserController {
         return new ResponseEntity<>(userRepository.findByEmail(email), HttpStatus.OK);
     }
 
-    @GetMapping(path="/api/users/all")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @GetMapping(path="/api/users")
+
+    public ResponseEntity<Page> getAllUsers(@RequestParam int pageStart,@RequestParam int pageSize) {
+        if(pageSize < 0 || pageStart < 0){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        PageRequest pr = PageRequest.of(pageStart, pageSize );
+        if (userRepository.findAll(pr).isEmpty())
+        {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(userRepository.findAll(pr), HttpStatus.OK);
     }
 }
