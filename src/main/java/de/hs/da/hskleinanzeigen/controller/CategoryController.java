@@ -1,6 +1,7 @@
 package de.hs.da.hskleinanzeigen.controller;
 
 import de.hs.da.hskleinanzeigen.domain.Category;
+import de.hs.da.hskleinanzeigen.domain.CategoryApi;
 import de.hs.da.hskleinanzeigen.domain.NotFoundException;
 import de.hs.da.hskleinanzeigen.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,28 @@ public class CategoryController {
 
     // @ResponseBody means the returned String is the response, not a view name
 	@PostMapping(path="/api/categories") // Map ONLY POST Requests
-    public ResponseEntity<Category> addNewCategory(@RequestBody Category category) {
+    public ResponseEntity<Category> addNewCategory(@RequestBody CategoryApi categoryApi) {
         //category.getParent() == null || getCategoryByID(category.getParent().getID()).isEmpty()
-        if(category.getName() == null){
-            return new ResponseEntity<>(category, HttpStatus.BAD_REQUEST);
+        if(categoryApi.getName() == null){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        // check if parent category is available
+        if(categoryApi.getParentId() > 0) {
+            if (getCategoryByID(categoryApi.getParentId()) == null) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
         }
         // Check if the category already exists in database
-        if(categoryRepository.findByName(category.getName()) != null){
-            return new ResponseEntity<>(category, HttpStatus.CONFLICT);
+        if(categoryRepository.findByName(categoryApi.getName()) != null){
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
+        //category just with name
+        if(categoryApi.getParentId() == 0){
+            Category category = new Category(categoryApi.getName(), null);
+            categoryRepository.save(category);
+            return new ResponseEntity<>(category, HttpStatus.CREATED);
+        }
+        Category category = new Category(categoryApi.getName(), categoryRepository.findById(categoryApi.getParentId()).get());
         categoryRepository.save(category);
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
@@ -35,7 +49,7 @@ public class CategoryController {
     public Optional<Category> getCategoryByID(@PathVariable int id) {
         Optional<Category> category = categoryRepository.findById(id);
         if(category.isEmpty()){
-            throw new NotFoundException("Category with the id: "+id+" is not found");
+            return null;
         }
         return category;
     }

@@ -1,9 +1,6 @@
 package de.hs.da.hskleinanzeigen.controller;
 
-import de.hs.da.hskleinanzeigen.domain.AD;
-import de.hs.da.hskleinanzeigen.domain.Category;
-import de.hs.da.hskleinanzeigen.domain.NotFoundException;
-import de.hs.da.hskleinanzeigen.domain.User;
+import de.hs.da.hskleinanzeigen.domain.*;
 import de.hs.da.hskleinanzeigen.repository.AdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -62,7 +59,7 @@ public class AdvertisementController{
 
     @GetMapping(path="/api/advertisements")
     @ResponseBody
-    public ResponseEntity<Page> getAlladvertisements(@RequestParam(required = false) Type type,@RequestParam(required = false , defaultValue = "-1") int category,@RequestParam(required = false , defaultValue = "-1") int priceFrom,@RequestParam(required = false, defaultValue = "-1") int priceTo,@RequestParam(defaultValue = "-1") int pageStart,@RequestParam(defaultValue = "-1") int pageSize) {
+    public ResponseEntity<Page> getAlladvertisements(@RequestParam(required = false) Type type, @RequestParam(required = false , defaultValue = "-1") int category, @RequestParam(required = false , defaultValue = "-1") int priceFrom, @RequestParam(required = false, defaultValue = "-1") int priceTo, @RequestParam(defaultValue = "-1") int pageStart, @RequestParam(defaultValue = "-1") int pageSize) {
         if(pageSize < 0 || pageStart < 0){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

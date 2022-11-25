@@ -3,7 +3,6 @@ package de.hs.da.hskleinanzeigen.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -20,7 +19,20 @@ public class Category {
     @JsonIgnore
     @ManyToOne
     private Category parent;
+/*
+    @JsonIgnore
+    private int parentId;
 
+    @JsonProperty("parentId")
+    public int getParentId() {
+        return parentId;
+    }
+
+    @JsonProperty("parentId")
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+*/
     public Category(){
 
     }
