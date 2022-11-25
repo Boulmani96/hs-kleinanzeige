@@ -18,7 +18,7 @@ public class AD {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Type Type;
+    private Type type;
 
     private Integer Price;
 
@@ -52,7 +52,7 @@ public class AD {
     }
 
     public AD(Type type, Category category,User user, String title, String description, Integer price, String location) {
-        this.Type = type;
+        this.type = type;
         this.category = category;
         this.user = user;
         this.Title = title;
@@ -78,11 +78,11 @@ public class AD {
     }
 
     public Type getType() {
-        return this.Type;
+        return this.type;
     }
 
     public void setType(Type type) {
-    	this.Type = type;
+    	this.type = type;
     }
 
     public String getTitle() {
@@ -148,7 +148,7 @@ public class AD {
     public String toString() {
         return "AD{" +
                 "id=" + ID +
-                ", Type=" + Type +
+                ", Type=" + type +
                 ", category=" + category +
                 ", Title='" + Title + '\'' +
                 ", Description='" + Description + '\'' +
