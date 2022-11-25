@@ -7,7 +7,7 @@ drop table if exists USER;
 create table if not exists CATEGORY
 (
     ID            INTEGER AUTO_INCREMENT comment '',
-    PARENT_ID     INTEGER null comment '',
+    PARENT_ID     INTEGER comment '',
     NAME          varchar(60) comment '',
     primary key (ID),
     FOREIGN key (PARENT_ID) REFERENCES CATEGORY(ID)

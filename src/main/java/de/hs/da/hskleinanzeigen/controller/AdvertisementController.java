@@ -63,7 +63,7 @@ public class AdvertisementController{
 
     @GetMapping(path="/api/advertisements")
     @ResponseBody
-    public ResponseEntity<Page> getAlladvertisements(@RequestParam(required = false) Type type,@RequestParam(required = false , defaultValue = "-1") int category,@RequestParam(required = false , defaultValue = "-1") int priceFrom,@RequestParam(required = false, defaultValue = "-1") int priceTo,@RequestParam(defaultValue = "-1") int pageStart,@RequestParam(defaultValue = "-1") int pageSize) {
+    public ResponseEntity<Page> getAlladvertisements(@RequestParam(required = false) Type type, @RequestParam(required = false , defaultValue = "-1") int category, @RequestParam(required = false , defaultValue = "-1") int priceFrom, @RequestParam(required = false, defaultValue = "-1") int priceTo, @RequestParam(defaultValue = "-1") int pageStart, @RequestParam(defaultValue = "-1") int pageSize) {
         if(pageSize < 0 || pageStart < 0){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
