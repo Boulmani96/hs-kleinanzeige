@@ -3,7 +3,7 @@ package de.hs.da.hskleinanzeigen.controller;
 import de.hs.da.hskleinanzeigen.domain.AD;
 import de.hs.da.hskleinanzeigen.domain.Category;
 import de.hs.da.hskleinanzeigen.domain.NotFoundException;
-import de.hs.da.hskleinanzeigen.domain.Type;
+import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.repository.AdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,19 +24,29 @@ public class AdvertisementController{
     @Autowired
     private CategoryController categoryController;
 
+    @Autowired
+    private UserController userController;
+
     @PostMapping(path="/api/advertisements") // Map ONLY POST Requests
     @ResponseBody
     public ResponseEntity<AD> addNewAdvertisement (@RequestBody AD advertisement) {
         if(advertisement.getType() == null || advertisement.getCategory() == null || advertisement.getCategory().getID() == null || advertisement.getTitle() == null
-                || advertisement.getDescription() == null){
+                || advertisement.getDescription() == null || advertisement.getUser() == null ||  advertisement.getUser().getId() == null ){
             return new ResponseEntity<>(advertisement, HttpStatus.BAD_REQUEST);
         }
         // @ResponseBody means the returned String is the response, not a view name
         if(categoryController.getCategoryByID(advertisement.getCategory().getID()).isEmpty()){
             return new ResponseEntity<>(advertisement, HttpStatus.BAD_REQUEST);
         }
+
+        if(!userController.getUserByID(advertisement.getUser().getId()).hasBody()){
+            return new ResponseEntity<>(advertisement, HttpStatus.BAD_REQUEST);
+        }
         Category category = categoryController.getCategoryByID(advertisement.getCategory().getID()).get();
+        User user = userController.getUserByID(advertisement.getUser().getId()).getBody();
+
         advertisement.setCategory(category);
+        advertisement.setUser(user);
         advertisementRepository.save(advertisement);
         return new ResponseEntity<>(advertisement, HttpStatus.CREATED);
     }
