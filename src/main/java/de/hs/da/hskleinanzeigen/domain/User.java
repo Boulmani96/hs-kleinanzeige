@@ -33,7 +33,7 @@ public class User {
     private String location;
 
     @JsonIgnore
-    private LocalDateTime Created;
+    private LocalDateTime created;
 
     public User(String email, String password, String first_name, String last_name, String phone, String location) {
         this.email = email;
@@ -108,12 +108,12 @@ public class User {
 
     @JsonProperty("Created")
     public LocalDateTime getCreated() {
-        return Created;
+        return created;
     }
 
     @JsonProperty("Created")
     public void setCreated(LocalDateTime created) {
-        Created = created;
+        this.created = created;
     }
 
     @Override
@@ -143,7 +143,7 @@ public class User {
                 ", Last_name='" + lastName + '\'' +
                 ", Phone='" + phone + '\'' +
                 ", Location='" + location + '\'' +
-                ", Created=" + Created +
+                ", Created=" + created +
                 '}';
     }
 }

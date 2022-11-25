@@ -47,14 +47,12 @@ public class UserController {
     }
 
     @GetMapping(path="/api/users")
-
-    public ResponseEntity<Page> getAllUsers(@RequestParam int pageStart,@RequestParam int pageSize) {
+    public ResponseEntity<Page> getUsers(@RequestParam int pageStart, @RequestParam int pageSize) {
         if(pageSize < 0 || pageStart < 0){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        PageRequest pr = PageRequest.of(pageStart, pageSize );
-        if (userRepository.findAll(pr).isEmpty())
-        {
+        PageRequest pr = PageRequest.of(pageStart, pageSize, Sort.by("created"));
+        if (userRepository.findAll(pr).isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(userRepository.findAll(pr), HttpStatus.OK);
