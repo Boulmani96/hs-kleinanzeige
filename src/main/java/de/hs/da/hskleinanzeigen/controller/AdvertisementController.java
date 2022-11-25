@@ -1,6 +1,10 @@
 package de.hs.da.hskleinanzeigen.controller;
 
-import de.hs.da.hskleinanzeigen.domain.*;
+import de.hs.da.hskleinanzeigen.domain.AD;
+import de.hs.da.hskleinanzeigen.domain.Category;
+import de.hs.da.hskleinanzeigen.domain.NotFoundException;
+import de.hs.da.hskleinanzeigen.domain.Type;
+import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.repository.AdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
