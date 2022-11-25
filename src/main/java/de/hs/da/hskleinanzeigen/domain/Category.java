@@ -19,20 +19,7 @@ public class Category {
     @JsonIgnore
     @ManyToOne
     private Category parent;
-/*
-    @JsonIgnore
-    private int parentId;
 
-    @JsonProperty("parentId")
-    public int getParentId() {
-        return parentId;
-    }
-
-    @JsonProperty("parentId")
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
-*/
     public Category(){
 
     }

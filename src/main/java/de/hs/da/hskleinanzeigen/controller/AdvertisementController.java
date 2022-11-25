@@ -2,7 +2,6 @@ package de.hs.da.hskleinanzeigen.controller;
 
 import de.hs.da.hskleinanzeigen.domain.AD;
 import de.hs.da.hskleinanzeigen.domain.Category;
-import de.hs.da.hskleinanzeigen.domain.NotFoundException;
 import de.hs.da.hskleinanzeigen.domain.Type;
 import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.repository.AdvertisementRepository;
@@ -36,14 +35,14 @@ public class AdvertisementController{
             return new ResponseEntity<>(advertisement, HttpStatus.BAD_REQUEST);
         }
         // @ResponseBody means the returned String is the response, not a view name
-        if(categoryController.getCategoryByID(advertisement.getCategory().getID()).isEmpty()){
+        if(categoryController.getCategoryByID(advertisement.getCategory().getID()) == null){
             return new ResponseEntity<>(advertisement, HttpStatus.BAD_REQUEST);
         }
 
         if(!userController.getUserByID(advertisement.getUser().getId()).hasBody()){
             return new ResponseEntity<>(advertisement, HttpStatus.BAD_REQUEST);
         }
-        Category category = categoryController.getCategoryByID(advertisement.getCategory().getID()).get();
+        Category category = categoryController.getCategoryByID(advertisement.getCategory().getID()).getBody();
         User user = userController.getUserByID(advertisement.getUser().getId()).getBody();
 
         advertisement.setCategory(category);
@@ -53,36 +52,36 @@ public class AdvertisementController{
     }
 
     @GetMapping("/api/advertisements/{id}")
-    public Optional<AD> getAdvertisementByID(@PathVariable int id) {
+    public ResponseEntity<AD> getAdvertisementByID(@PathVariable int id) {
         Optional<AD> advertisement = advertisementRepository.findById(id);
         if(advertisement.isEmpty()){
-            throw new NotFoundException("Advertisement with the id: "+id+" is not found");
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return advertisementRepository.findById(id);
+        return new ResponseEntity<>(advertisement.get(), HttpStatus.OK);
     }
 
     @GetMapping(path="/api/advertisements")
     @ResponseBody
-    public ResponseEntity<Page> getAlladvertisements(@RequestParam(required = false) Type type, @RequestParam(required = false , defaultValue = "-1") int category, @RequestParam(required = false , defaultValue = "-1") int priceFrom, @RequestParam(required = false, defaultValue = "-1") int priceTo, @RequestParam(defaultValue = "-1") int pageStart, @RequestParam(defaultValue = "-1") int pageSize) {
+    public ResponseEntity<Page> getAdvertisements(@RequestParam(required = false) Type type, @RequestParam(required = false , defaultValue = "-1") int category, @RequestParam(required = false , defaultValue = "-1") int priceFrom, @RequestParam(required = false, defaultValue = "-1") int priceTo, @RequestParam(defaultValue = "-1") int pageStart, @RequestParam(defaultValue = "-1") int pageSize) {
         if(pageSize < 0 || pageStart < 0){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        PageRequest pr = PageRequest.of(pageStart, pageSize );
+        PageRequest pr = PageRequest.of(pageStart, pageSize);
         List<AD> filteredList = advertisementRepository.findAll();
 
         if(type != null){
-            List<AD> filterType =  advertisementRepository.findByType(type,pr);
+            List<AD> filterType = advertisementRepository.findByType(type,pr);
             filteredList.retainAll(filterType);
         }
 
         if(category != -1){
-            List<AD> filterCategory =  advertisementRepository.findByCategory_ID(category,pr);
+            List<AD> filterCategory = advertisementRepository.findByCategory_ID(category,pr);
             filteredList.retainAll(filterCategory);
         }
 
         if(priceFrom != -1 && priceTo != -1){
-            List<AD> filterPriceFromTo =  advertisementRepository.findByPriceFromTo(priceFrom,priceTo,pr);
+            List<AD> filterPriceFromTo = advertisementRepository.findByPriceFromTo(priceFrom,priceTo,pr);
             filteredList.retainAll(filterPriceFromTo);
         }
 
