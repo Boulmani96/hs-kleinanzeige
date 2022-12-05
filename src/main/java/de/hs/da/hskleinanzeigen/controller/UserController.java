@@ -21,7 +21,7 @@ public class UserController {
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
         if(user.getEmail() == null || user.getFirstName() == null||
                 user.getLastName() == null || user.getPhone() == null|| user.getLocation() == null){
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         if (userRepository.findByEmail(user.getEmail()) != null){
             return new ResponseEntity<>(user, HttpStatus.CONFLICT);

@@ -14,18 +14,18 @@ import java.util.Objects;
 public class AD {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ID;
+    private int ID;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    private Integer Price;
+    private int price;
 
-    private String Location;
+    private String location;
 
     @JsonIgnore
-    private LocalDateTime Created;
+    private LocalDateTime created;
 
     @ManyToOne
     private Category category;
@@ -42,30 +42,30 @@ public class AD {
     }
 
     @Column(nullable = false)
-    private String Title;
+    private String title;
 
     @Column(nullable = false)
-    private String Description;
+    private String description;
 
     public AD() {
 
     }
 
-    public AD(Type type, Category category,User user, String title, String description, Integer price, String location) {
+    public AD(Type type, Category category,User user, String title, String description, int price, String location) {
         this.type = type;
         this.category = category;
         this.user = user;
-        this.Title = title;
-        this.Description = description;
-        this.Price = price;
-        this.Location = location;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.location = location;
     }
 
-    public Integer getID() {
+    public int getID() {
         return this.ID;
     }
 
-    public void setID(Integer id) {
+    public void setID(int id) {
         this.ID = id;
     }
 
@@ -86,45 +86,45 @@ public class AD {
     }
 
     public String getTitle() {
-        return this.Title;
+        return this.title;
     }
 
     public void setTitle(String title) {
-    	this.Title = title;
+    	this.title = title;
     }
 
     public String getDescription() {
-        return this.Description;
+        return this.description;
     }
 
     public void setDescription(String description) {
-    	this.Description = description;
+    	this.description = description;
     }
 
-    public Integer getPrice() {
-        return this.Price;
+    public int getPrice() {
+        return this.price;
     }
 
-    public void setPrice(Integer price) {
-    	this.Price = price;
+    public void setPrice(int price) {
+    	this.price = price;
     }
 
     public String getLocation() {
-        return this.Location;
+        return this.location;
     }
 
     public void setLocation(String location) {
-    	this.Location = location;
+    	this.location = location;
     }
 
     @JsonProperty("Created")
     public LocalDateTime getCreated() {
-        return this.Created;
+        return this.created;
     }
 
     @JsonProperty("Created")
     public void setCreated(LocalDateTime created) {
-    	this.Created = created;
+    	this.created = created;
     }
 
     @Override
@@ -150,11 +150,11 @@ public class AD {
                 "id=" + ID +
                 ", Type=" + type +
                 ", category=" + category +
-                ", Title='" + Title + '\'' +
-                ", Description='" + Description + '\'' +
-                ", Price=" + Price +
-                ", Location='" + Location + '\'' +
-                ", Created=" + Created +
+                ", Title='" + title + '\'' +
+                ", Description='" + description + '\'' +
+                ", Price=" + price +
+                ", Location='" + location + '\'' +
+                ", Created=" + created +
                 '}';
     }
 }

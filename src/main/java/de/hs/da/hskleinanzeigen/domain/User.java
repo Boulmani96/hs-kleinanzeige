@@ -20,6 +20,7 @@ public class User {
     private String email;
 
     @JsonIgnore
+    //@Size(min=5, message="Name should have at least 5 characters")
     private String password;
 
     @Column(name = "first_Name")

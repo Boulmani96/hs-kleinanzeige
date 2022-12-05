@@ -1,14 +1,14 @@
-package de.hs.da.hskleinanzeigen.domain;
+package de.hs.da.hskleinanzeigen.DTOs;
 
-public class CategoryApi {
+public class CreationCategoryDTO {
 
     private String name;
     private int parentId;
 
-    public CategoryApi() {
+    public CreationCategoryDTO() {
     }
 
-    public CategoryApi(String name, int parentId) {
+    public CreationCategoryDTO(String name, int parentId) {
         this.name = name;
         this.parentId = parentId;
     }

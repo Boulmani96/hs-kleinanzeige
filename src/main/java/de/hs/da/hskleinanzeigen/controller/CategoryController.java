@@ -1,7 +1,7 @@
 package de.hs.da.hskleinanzeigen.controller;
 
 import de.hs.da.hskleinanzeigen.domain.Category;
-import de.hs.da.hskleinanzeigen.domain.CategoryApi;
+import de.hs.da.hskleinanzeigen.DTOs.CreationCategoryDTO;
 import de.hs.da.hskleinanzeigen.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class CategoryController {
 
     // @ResponseBody means the returned String is the response, not a view name
 	@PostMapping(path="/api/categories") // Map ONLY POST Requests
-    public ResponseEntity<Category> addNewCategory(@RequestBody CategoryApi categoryApi) {
+    public ResponseEntity<Category> addNewCategory(@RequestBody CreationCategoryDTO categoryApi) {
         //category.getParent() == null || getCategoryByID(category.getParent().getID()).isEmpty()
         if(categoryApi.getName() == null){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
