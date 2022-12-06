@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ID;
+    private Integer id;
 
     private String name;
 
@@ -29,12 +29,12 @@ public class Category {
         this.parent = parent;
     }
 
-    public Integer getID() {
-        return this.ID;
+    public Integer getId() {
+        return this.id;
     }
 
-    public void setID(Integer id) {
-        this.ID = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -64,18 +64,18 @@ public class Category {
             return false;
         }
         Category category = (Category) o;
-        return ID == category.ID;
+        return id == category.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         return "Category{" +
-                "id=" + ID +
+                "id=" + id +
                 ", Name='" + name + '\'' +
                 ", parent=" + parent +
                 '}';

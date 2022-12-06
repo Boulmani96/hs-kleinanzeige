@@ -1,47 +1,45 @@
 package de.hs.da.hskleinanzeigen.DTOs;
 
-import de.hs.da.hskleinanzeigen.domain.Type;
-
-public class CreationAdvertisementDTO {
-    private Type type;
-    private CategoryDTO categoryDTO;
-    private UserDTO userDTO;
+public class CreationAdDTO {
+    private String type;
+    private CategoryDTO category;
+    private UserDTO user;
     private String title;
     private String description;
     private int price;
     private String location;
 
-    public CreationAdvertisementDTO(Type type, CategoryDTO categoryDTO, UserDTO userDTO, String title, String description, int price, String location) {
+    public CreationAdDTO(String type, CategoryDTO category, UserDTO user, String title, String description, int price, String location) {
         this.type = type;
-        this.categoryDTO = categoryDTO;
-        this.userDTO = userDTO;
+        this.category = category;
+        this.user = user;
         this.title = title;
         this.description = description;
         this.price = price;
         this.location = location;
     }
 
-    public CategoryDTO getCategoryDTO() {
-        return categoryDTO;
+    public CategoryDTO getCategory() {
+        return category;
     }
 
-    public void setCategoryDTO(CategoryDTO categoryDTO) {
-        this.categoryDTO = categoryDTO;
+    public void setCategory(CategoryDTO category) {
+        this.category = category;
     }
 
-    public UserDTO getUserDTO() {
-        return userDTO;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 

@@ -14,7 +14,7 @@ import java.util.Objects;
 public class AD {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID;
+    private int id;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -61,12 +61,12 @@ public class AD {
         this.location = location;
     }
 
-    public int getID() {
-        return this.ID;
+    public int getId() {
+        return this.id;
     }
 
-    public void setID(int id) {
-        this.ID = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Category getCategory() {
@@ -136,18 +136,18 @@ public class AD {
             return false;
         }
         AD ad = (AD) o;
-        return ID == ad.ID;
+        return id == ad.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         return "AD{" +
-                "id=" + ID +
+                "id=" + id +
                 ", Type=" + type +
                 ", category=" + category +
                 ", Title='" + title + '\'' +
