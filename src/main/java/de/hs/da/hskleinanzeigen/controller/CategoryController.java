@@ -24,7 +24,7 @@ public class CategoryController {
 
     // @ResponseBody means the returned String is the response, not a view name
 	@PostMapping(path="/api/categories") // Map ONLY POST Requests
-    public ResponseEntity<Category> addNewCategory(@RequestBody CreationCategoryDTO creationCategoryDTO) {
+    public ResponseEntity<CategoryDTO> addNewCategory(@RequestBody CreationCategoryDTO creationCategoryDTO) {
         //category.getParent() == null || getCategoryByID(category.getParent().getID()).isEmpty()
         if(creationCategoryDTO.getName() == null){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -39,16 +39,10 @@ public class CategoryController {
         if(categoryRepository.findByName(creationCategoryDTO.getName()) != null){
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
-        //category just with name
-        if(creationCategoryDTO.getParentId() == 0){
-            Category category = new Category(creationCategoryDTO.getName(), null);
-            categoryRepository.save(category);
-            return new ResponseEntity<>(category, HttpStatus.CREATED);
-        }
-        //category with name and parent
-        Category category = new Category(creationCategoryDTO.getName(), categoryRepository.findById(creationCategoryDTO.getParentId()).get());
+
+        Category category = categoryMapper.CreationCategoryDTOtoCategory(creationCategoryDTO);
         categoryRepository.save(category);
-        return new ResponseEntity<>(category, HttpStatus.CREATED);
+        return new ResponseEntity<>(categoryMapper.categoryToCategoryDTO(category), HttpStatus.CREATED);
     }
 
     @GetMapping(path="/api/categories/{id}")

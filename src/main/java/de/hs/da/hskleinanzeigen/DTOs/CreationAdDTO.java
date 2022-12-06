@@ -9,6 +9,10 @@ public class CreationAdDTO {
     private int price;
     private String location;
 
+    public CreationAdDTO(){
+
+    }
+
     public CreationAdDTO(String type, CategoryDTO category, UserDTO user, String title, String description, int price, String location) {
         this.type = type;
         this.category = category;
@@ -17,6 +21,14 @@ public class CreationAdDTO {
         this.description = description;
         this.price = price;
         this.location = location;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public CategoryDTO getCategory() {
@@ -33,14 +45,6 @@ public class CreationAdDTO {
 
     public void setUser(UserDTO user) {
         this.user = user;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getTitle() {

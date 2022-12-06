@@ -5,7 +5,8 @@ public class CreationCategoryDTO {
     private String name;
     private int parentId;
 
-    public CreationCategoryDTO() {
+    public CreationCategoryDTO(){
+
     }
 
     public CreationCategoryDTO(String name, int parentId) {

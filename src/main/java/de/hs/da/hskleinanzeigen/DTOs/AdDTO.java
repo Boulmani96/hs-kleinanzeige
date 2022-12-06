@@ -1,7 +1,5 @@
 package de.hs.da.hskleinanzeigen.DTOs;
 
-import de.hs.da.hskleinanzeigen.domain.Type;
-
 public class AdDTO {
     private int id;
     private String type;
@@ -25,10 +23,6 @@ public class AdDTO {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getType() {
