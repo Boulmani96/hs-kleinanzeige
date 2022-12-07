@@ -8,6 +8,10 @@ import de.hs.da.hskleinanzeigen.domain.AD;
 import de.hs.da.hskleinanzeigen.domain.Type;
 import de.hs.da.hskleinanzeigen.mappers.AdvertisementMapper;
 import de.hs.da.hskleinanzeigen.repository.AdvertisementRepository;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +40,14 @@ public class AdvertisementController{
     @Autowired
     private AdvertisementMapper advertisementMapper = Mappers.getMapper(AdvertisementMapper.class);
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Advertisement Created", content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid parameters", content = @Content)
+    })
     @PostMapping(path="/api/advertisements") // Map ONLY POST Requests
     @ResponseBody
-    public ResponseEntity<AdDTO> addNewAdvertisement (@RequestBody CreationAdDTO creationAdDTO) {
+    public ResponseEntity<AdDTO> addNewAdvertisement (@Valid @RequestBody CreationAdDTO creationAdDTO) {
         if(creationAdDTO.getType() == null || creationAdDTO.getCategory() == null
                 || creationAdDTO.getCategory().getId() == null || creationAdDTO.getTitle() == null
                 || creationAdDTO.getDescription() == null || creationAdDTO.getUser() == null
@@ -64,6 +74,11 @@ public class AdvertisementController{
         return new ResponseEntity<>(advertisementMapper.adToAdDTO(advertisement), HttpStatus.CREATED);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found Advertisement", content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = AdDTO.class)) }),
+            @ApiResponse(responseCode = "404", description = "Advertisement not found", content = @Content)
+    })
     @GetMapping("/api/advertisements/{id}")
     public ResponseEntity<AdDTO> getAdvertisementById(@PathVariable int id) {
         Optional<AD> advertisement = advertisementRepository.findById(id);
@@ -74,6 +89,12 @@ public class AdvertisementController{
         return new ResponseEntity<>(advertisementMapper.adToAdDTO(advertisement.get()), HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found advertisements", content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Page.class)) }),
+            @ApiResponse(responseCode = "204", description = "No content", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid Parameters", content = @Content)
+    })
     @GetMapping(path="/api/advertisements")
     @ResponseBody
     public ResponseEntity<Page> getAdvertisements(@RequestParam(required = false) Type type, @RequestParam(required = false , defaultValue = "-1") int category, @RequestParam(required = false , defaultValue = "-1") int priceFrom, @RequestParam(required = false, defaultValue = "-1") int priceTo, @RequestParam(defaultValue = "-1") int pageStart, @RequestParam(defaultValue = "-1") int pageSize) {
