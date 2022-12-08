@@ -133,6 +133,11 @@
             <version>6.0.13.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.9.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -141,10 +146,21 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-failsafe-plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.9.1</version>
+                <configuration>
+                    <propertyFile>src/main/resources/application.yml</propertyFile>
+                    <propertyFileWillOverride>true</propertyFileWillOverride>
+                </configuration>
             </plugin>
 
             <plugin>
