@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,25 +16,28 @@ public class AD {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @NotNull(message = "Type cannot be null")
     @Enumerated(EnumType.STRING)
     private Type type;
+
+    @NotNull(message = "Category cannot be null")
+    @ManyToOne
+    private Category category;
+
+    @NotNull(message = "User cannot be null")
+    @ManyToOne
+    private User user;
+
+    @NotNull(message = "Title cannot be null")
+    private String title;
+
+    @NotNull(message = "Description cannot be null")
+    private String description;
 
     private int price;
 
     private String location;
 
+    @NotNull(message = "Created cannot be null")
     private LocalDateTime created;
-
-    @ManyToOne
-    private Category category;
-
-    @ManyToOne
-    private User user;
-
-    @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
-    private String description;
 }

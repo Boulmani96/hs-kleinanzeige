@@ -39,5 +39,6 @@ public class User {
 
     private String location;
 
+    @NotNull(message = "Created cannot be null")
     private LocalDateTime created;
 }

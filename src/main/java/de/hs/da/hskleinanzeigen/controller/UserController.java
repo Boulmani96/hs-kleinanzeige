@@ -22,6 +22,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -50,6 +51,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         User user = userMapper.creationUserDTOToUser(creationUserDTO);
+        user.setCreated(LocalDateTime.now());
         userRepository.save(user);
         return new ResponseEntity<>(userMapper.userToUserDTO(user), HttpStatus.CREATED);
     }

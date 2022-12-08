@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,6 +71,7 @@ public class AdvertisementController{
         creationAdDTO.setCategory(categoryDTO);
         creationAdDTO.setUser(userDTO);
         AD advertisement = advertisementMapper.creationAdDTOtoAd(creationAdDTO);
+        advertisement.setCreated(LocalDateTime.now());
         advertisementRepository.save(advertisement);
         return new ResponseEntity<>(advertisementMapper.adToAdDTO(advertisement), HttpStatus.CREATED);
     }
