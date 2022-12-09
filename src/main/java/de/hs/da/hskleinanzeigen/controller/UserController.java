@@ -1,8 +1,8 @@
 package de.hs.da.hskleinanzeigen.controller;
 
+import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.dtos.CreationUserDTO;
 import de.hs.da.hskleinanzeigen.dtos.UserDTO;
-import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.mappers.UserMapper;
 import de.hs.da.hskleinanzeigen.repository.UserRepository;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.HashMap;

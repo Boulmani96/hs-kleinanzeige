@@ -11,7 +11,6 @@
                 <tableExists tableName="CATEGORY"/>
                 <tableExists tableName="USER"/>
                 <tableExists tableName="AD"/>
-                <tableExists tableName="NOTEPAD"/>
             </not>
         </preConditions>
         <!-- Category -->
@@ -65,7 +64,13 @@
         <addForeignKeyConstraint baseTableName="AD" baseColumnNames="CATEGORY_ID" constraintName="Category_id_AD_fk" referencedTableName="CATEGORY" referencedColumnNames="ID" />
         <addForeignKeyConstraint baseTableName="AD" baseColumnNames="USER_ID" constraintName="User_id_AD_fk" referencedTableName="USER" referencedColumnNames="ID" />
     </changeSet>
+
     <changeSet id="2" author="Ouassime Boulmani">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="NOTEPAD"/>
+            </not>
+        </preConditions>
         <!-- NOTEPAD -->
         <createTable tableName="NOTEPAD">
             <column name="ID" type="INT" autoIncrement="true">

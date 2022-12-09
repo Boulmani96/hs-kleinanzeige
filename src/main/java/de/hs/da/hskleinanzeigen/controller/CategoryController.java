@@ -1,8 +1,8 @@
 package de.hs.da.hskleinanzeigen.controller;
 
+import de.hs.da.hskleinanzeigen.domain.Category;
 import de.hs.da.hskleinanzeigen.dtos.CategoryDTO;
 import de.hs.da.hskleinanzeigen.dtos.CreationCategoryDTO;
-import de.hs.da.hskleinanzeigen.domain.Category;
 import de.hs.da.hskleinanzeigen.mappers.CategoryMapper;
 import de.hs.da.hskleinanzeigen.repository.CategoryRepository;
 import io.swagger.v3.oas.annotations.media.Content;

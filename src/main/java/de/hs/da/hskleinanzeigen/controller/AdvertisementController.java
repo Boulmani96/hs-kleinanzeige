@@ -1,11 +1,11 @@
 package de.hs.da.hskleinanzeigen.controller;
 
+import de.hs.da.hskleinanzeigen.domain.AD;
+import de.hs.da.hskleinanzeigen.domain.Type;
 import de.hs.da.hskleinanzeigen.dtos.AdDTO;
 import de.hs.da.hskleinanzeigen.dtos.CategoryDTO;
 import de.hs.da.hskleinanzeigen.dtos.CreationAdDTO;
 import de.hs.da.hskleinanzeigen.dtos.UserDTO;
-import de.hs.da.hskleinanzeigen.domain.AD;
-import de.hs.da.hskleinanzeigen.domain.Type;
 import de.hs.da.hskleinanzeigen.mappers.AdvertisementMapper;
 import de.hs.da.hskleinanzeigen.repository.AdvertisementRepository;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;

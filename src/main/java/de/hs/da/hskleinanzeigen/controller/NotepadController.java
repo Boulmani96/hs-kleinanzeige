@@ -1,11 +1,11 @@
 package de.hs.da.hskleinanzeigen.controller;
 
-import de.hs.da.hskleinanzeigen.dtos.CreationNotepadDTO;
-import de.hs.da.hskleinanzeigen.dtos.GetNotepadDTO;
-import de.hs.da.hskleinanzeigen.dtos.NotepadDTO;
 import de.hs.da.hskleinanzeigen.domain.AD;
 import de.hs.da.hskleinanzeigen.domain.Notepad;
 import de.hs.da.hskleinanzeigen.domain.User;
+import de.hs.da.hskleinanzeigen.dtos.CreationNotepadDTO;
+import de.hs.da.hskleinanzeigen.dtos.GetNotepadDTO;
+import de.hs.da.hskleinanzeigen.dtos.NotepadDTO;
 import de.hs.da.hskleinanzeigen.mappers.NotepadMapper;
 import de.hs.da.hskleinanzeigen.repository.NotepadRepository;
 import io.swagger.v3.oas.annotations.media.Content;
