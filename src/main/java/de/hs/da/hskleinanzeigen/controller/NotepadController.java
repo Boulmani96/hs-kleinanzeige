@@ -1,0 +1,127 @@
+package de.hs.da.hskleinanzeigen.controller;
+
+import de.hs.da.hskleinanzeigen.DTOs.CreationNotepadDTO;
+import de.hs.da.hskleinanzeigen.DTOs.GetNotepadDTO;
+import de.hs.da.hskleinanzeigen.DTOs.NotepadDTO;
+import de.hs.da.hskleinanzeigen.DTOs.UserDTO;
+import de.hs.da.hskleinanzeigen.domain.AD;
+import de.hs.da.hskleinanzeigen.domain.Notepad;
+import de.hs.da.hskleinanzeigen.domain.User;
+import de.hs.da.hskleinanzeigen.mappers.CategoryMapper;
+import de.hs.da.hskleinanzeigen.mappers.NotepadMapper;
+import de.hs.da.hskleinanzeigen.repository.NotepadRepository;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import liquibase.pro.packaged.R;
+import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@RestController
+public class NotepadController {
+    @Autowired
+    private NotepadRepository notepadRepository;
+
+    @Autowired
+    private NotepadMapper notepadMapper = Mappers.getMapper(NotepadMapper .class);;
+
+    @Autowired
+    private UserController userController;
+
+    @Autowired
+    private AdvertisementController advertisementController;
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Notepad Created", content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = NotepadDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid parameters", content = @Content)
+    })
+    @PutMapping("/api/users/{userId}/notepad")
+    public ResponseEntity<NotepadDTO> putNotepad(@RequestBody CreationNotepadDTO creationNotepadDTO, @PathVariable Integer userId){
+        if(creationNotepadDTO.getAdvertisementId() == null || userId == null || userId < 0 ||creationNotepadDTO.getNote() == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        //if User or Advertisement does not exists
+        if(userController.getUserByID(userId).getBody() == null
+           || advertisementController.getAdvertisementById(creationNotepadDTO.getAdvertisementId()).getBody() == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = notepadMapper.userDTOtoUser(userController.getUserByID(userId).getBody());
+        AD ad = notepadMapper.adDTOtoAd(advertisementController.getAdvertisementById(creationNotepadDTO.getAdvertisementId()).getBody());
+
+        //Notepad already exists with the same user and advertisement => update
+        Notepad existsNotepad = notepadRepository.findByUser_idAndByAd_id(userId, creationNotepadDTO.getAdvertisementId());
+        if(existsNotepad != null){
+            existsNotepad.setNote(creationNotepadDTO.getNote());
+            existsNotepad.setCreated(LocalDateTime.now());
+            notepadRepository.save(existsNotepad);
+            return new ResponseEntity<>(notepadMapper.notepadToNotepadDTO(existsNotepad), HttpStatus.OK);
+        }
+        //Notepad does not exists => add new Notepad
+        Notepad notepad = notepadMapper.creationNotepadDTOtoNotepad(creationNotepadDTO);
+        notepad.setUser(user);
+        notepad.setAd(ad);
+        notepad.setCreated(LocalDateTime.now());
+        notepadRepository.save(notepad);
+        return new ResponseEntity<>(notepadMapper.notepadToNotepadDTO(notepad), HttpStatus.OK);
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found Notepad", content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = GetNotepadDTO.class)) }),
+            @ApiResponse(responseCode = "404", description = "No User was found with the given userID", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid parameters", content = @Content),
+            @ApiResponse(responseCode = "204", description = "No Notepad was found", content = @Content)
+    })
+    @GetMapping("/api/users/{userId}/notepad")
+    public ResponseEntity<List<GetNotepadDTO>> getNotepad(@PathVariable Integer userId){
+        if (userId == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        // check if user exists or not
+        if(userController.getUserByID(userId).getBody() == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Notepad> notepadList = notepadRepository.findByUser_id(userId);
+
+        // if no content
+        if (notepadList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        // mapper Notepad to GetNotepadDTO
+        List<GetNotepadDTO> getNotepadDTOList = notepadMapper.notepadListToGetNotepadDTOList(notepadList);
+        return new ResponseEntity<>(getNotepadDTOList, HttpStatus.OK);
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Notepad deleted", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No User was found with the given userID", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid parameters", content = @Content)
+    })
+    @DeleteMapping("/api/users/{userId}/notepad/{adId}")
+    public ResponseEntity deleteNotepad(@PathVariable Integer userId, @PathVariable Integer adId){
+        if(userId == null || adId == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Notepad notepad = notepadRepository.findByUser_idAndByAd_id(userId, adId);
+        if (notepad == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        notepadRepository.delete(notepad);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}

@@ -2,41 +2,28 @@ package de.hs.da.hskleinanzeigen.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Data //That bundles the features of @ToString, @EqualsAndHashCode, @Getter/@Setter and @RequiredArgsConstructor
 @NoArgsConstructor //Will lead to an empty constructor generation.
-@Table(name = "AD")
-public class AD {
+@Table(name = "NOTEPAD")
+public class Notepad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @NotNull(message = "Type cannot be null")
-    @Enumerated(EnumType.STRING)
-    private Type type;
-
-    @NotNull(message = "Category cannot be null")
-    @ManyToOne
-    private Category category;
+    private Integer id;
 
     @NotNull(message = "User cannot be null")
     @ManyToOne
     private User user;
 
-    @NotNull(message = "Title cannot be null")
-    private String title;
+    @NotNull(message = "Advertisement cannot be null")
+    @ManyToOne
+    private AD ad;
 
-    @NotNull(message = "Description cannot be null")
-    private String description;
-
-    private int price;
-
-    private String location;
+    private String note;
 
     @NotNull(message = "Created cannot be null")
     private LocalDateTime created;

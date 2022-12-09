@@ -1,0 +1,18 @@
+package de.hs.da.hskleinanzeigen.mappers;
+
+import de.hs.da.hskleinanzeigen.DTOs.CategoryDTO;
+import de.hs.da.hskleinanzeigen.DTOs.CreationCategoryDTO;
+import de.hs.da.hskleinanzeigen.domain.Category;
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface CategoryMapper {
+
+    CategoryDTO categoryToCategoryDTO(Category category);
+
+    Category categoryDTOtoCategory(CategoryDTO categoryDTO);
+
+    CreationCategoryDTO CategoryToCreationCategoryDTO(Category category);
+
+    Category CreationCategoryDTOtoCategory(CreationCategoryDTO creationCategoryDTO);
+}
