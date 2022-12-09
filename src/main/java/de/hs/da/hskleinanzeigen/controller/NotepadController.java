@@ -1,32 +1,24 @@
 package de.hs.da.hskleinanzeigen.controller;
 
-import de.hs.da.hskleinanzeigen.DTOs.CreationNotepadDTO;
-import de.hs.da.hskleinanzeigen.DTOs.GetNotepadDTO;
-import de.hs.da.hskleinanzeigen.DTOs.NotepadDTO;
-import de.hs.da.hskleinanzeigen.DTOs.UserDTO;
+import de.hs.da.hskleinanzeigen.dtos.CreationNotepadDTO;
+import de.hs.da.hskleinanzeigen.dtos.GetNotepadDTO;
+import de.hs.da.hskleinanzeigen.dtos.NotepadDTO;
 import de.hs.da.hskleinanzeigen.domain.AD;
 import de.hs.da.hskleinanzeigen.domain.Notepad;
 import de.hs.da.hskleinanzeigen.domain.User;
-import de.hs.da.hskleinanzeigen.mappers.CategoryMapper;
 import de.hs.da.hskleinanzeigen.mappers.NotepadMapper;
 import de.hs.da.hskleinanzeigen.repository.NotepadRepository;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import liquibase.pro.packaged.R;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 public class NotepadController {

@@ -1,7 +1,7 @@
 package de.hs.da.hskleinanzeigen.controller;
 
-import de.hs.da.hskleinanzeigen.DTOs.CreationUserDTO;
-import de.hs.da.hskleinanzeigen.DTOs.UserDTO;
+import de.hs.da.hskleinanzeigen.dtos.CreationUserDTO;
+import de.hs.da.hskleinanzeigen.dtos.UserDTO;
 import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.mappers.UserMapper;
 import de.hs.da.hskleinanzeigen.repository.UserRepository;

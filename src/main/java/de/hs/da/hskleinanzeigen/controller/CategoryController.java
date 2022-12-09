@@ -1,8 +1,7 @@
 package de.hs.da.hskleinanzeigen.controller;
 
-import de.hs.da.hskleinanzeigen.DTOs.CategoryDTO;
-import de.hs.da.hskleinanzeigen.DTOs.CreationCategoryDTO;
-import de.hs.da.hskleinanzeigen.DTOs.UserDTO;
+import de.hs.da.hskleinanzeigen.dtos.CategoryDTO;
+import de.hs.da.hskleinanzeigen.dtos.CreationCategoryDTO;
 import de.hs.da.hskleinanzeigen.domain.Category;
 import de.hs.da.hskleinanzeigen.mappers.CategoryMapper;
 import de.hs.da.hskleinanzeigen.repository.CategoryRepository;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @RestController

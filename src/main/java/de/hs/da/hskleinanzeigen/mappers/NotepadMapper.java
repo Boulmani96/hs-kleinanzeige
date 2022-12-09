@@ -1,6 +1,6 @@
 package de.hs.da.hskleinanzeigen.mappers;
 
-import de.hs.da.hskleinanzeigen.DTOs.*;
+import de.hs.da.hskleinanzeigen.dtos.*;
 import de.hs.da.hskleinanzeigen.domain.AD;
 import de.hs.da.hskleinanzeigen.domain.Notepad;
 import de.hs.da.hskleinanzeigen.domain.User;
