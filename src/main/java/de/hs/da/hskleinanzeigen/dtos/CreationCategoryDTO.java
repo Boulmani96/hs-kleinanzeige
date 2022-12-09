@@ -1,4 +1,4 @@
-package de.hs.da.hskleinanzeigen.DTOs;
+package de.hs.da.hskleinanzeigen.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package de.hs.da.hskleinanzeigen.DTOs;
+package de.hs.da.hskleinanzeigen.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetNotepadDTO {
+public class CategoryDTO {
     private Integer id;
-    private AdDTO advertisement;
-    private String note;
+    private String name;
 }

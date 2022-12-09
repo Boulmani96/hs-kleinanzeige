@@ -1,9 +1,9 @@
 package de.hs.da.hskleinanzeigen.controller;
 
-import de.hs.da.hskleinanzeigen.DTOs.AdDTO;
-import de.hs.da.hskleinanzeigen.DTOs.CategoryDTO;
-import de.hs.da.hskleinanzeigen.DTOs.CreationAdDTO;
-import de.hs.da.hskleinanzeigen.DTOs.UserDTO;
+import de.hs.da.hskleinanzeigen.dtos.AdDTO;
+import de.hs.da.hskleinanzeigen.dtos.CategoryDTO;
+import de.hs.da.hskleinanzeigen.dtos.CreationAdDTO;
+import de.hs.da.hskleinanzeigen.dtos.UserDTO;
 import de.hs.da.hskleinanzeigen.domain.AD;
 import de.hs.da.hskleinanzeigen.domain.Type;
 import de.hs.da.hskleinanzeigen.mappers.AdvertisementMapper;
