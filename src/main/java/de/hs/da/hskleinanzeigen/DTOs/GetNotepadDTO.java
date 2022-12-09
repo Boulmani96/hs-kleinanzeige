@@ -7,7 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CategoryDTO {
+public class GetNotepadDTO {
     private Integer id;
-    private String name;
+    private AdDTO advertisement;
+    private String note;
 }

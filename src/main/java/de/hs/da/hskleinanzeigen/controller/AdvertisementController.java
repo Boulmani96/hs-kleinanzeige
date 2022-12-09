@@ -55,13 +55,9 @@ public class AdvertisementController{
                 || creationAdDTO.getUser().getId() == null ){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        // If Category does not exist
-        if(categoryController.getCategoryByID(creationAdDTO.getCategory().getId()) == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        // If user does not exist
-        if(!userController.getUserByID(creationAdDTO.getUser().getId()).hasBody()){
+        // If Category or user does not exist
+        if(categoryController.getCategoryByID(creationAdDTO.getCategory().getId()) == null
+            || !userController.getUserByID(creationAdDTO.getUser().getId()).hasBody()){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
