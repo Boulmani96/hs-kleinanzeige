@@ -88,6 +88,28 @@ public class NotepadControllerTest {
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
   @Test
+  public void testDeleteNotepad() throws Exception{
+    Notepad mockNotepad = mock(Notepad.class);
+    when(notepadService.findByUser_idAndByAd_id(1, 1)).thenReturn(mockNotepad);
+    doNothing().when(notepadService).deleteNotepad(mockNotepad);
+
+    ResponseEntity<NotepadDTO> response = notepadController.deleteNotepad(1, 1);
+    assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+  }
+  @Test
+  public void testDeleteNotepad_BAD_REQUEST() throws Exception{
+    ResponseEntity<NotepadDTO> response = notepadController.deleteNotepad(null,null );
+    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+  }
+  @Test
+  public void testDeleteNotepad_NOT_FOUND() throws Exception{
+    ResponseEntity<NotepadDTO> response = notepadController.deleteNotepad(1,1 );
+    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+  }
+  @Test
   public void testPutNotepad_BAD_REQUEST() throws Exception {
     CreationNotepadDTO creationNotepadDTO = new CreationNotepadDTO(1,"note");
 
