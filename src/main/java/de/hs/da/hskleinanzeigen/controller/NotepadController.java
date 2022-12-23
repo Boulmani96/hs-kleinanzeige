@@ -27,7 +27,7 @@ public class NotepadController {
     private NotepadService notepadService;
 
     @Autowired
-    private NotepadMapper notepadMapper = Mappers.getMapper(NotepadMapper .class);;
+    private NotepadMapper notepadMapper = Mappers.getMapper(NotepadMapper .class);
 
     @Autowired
     private UserController userController;
