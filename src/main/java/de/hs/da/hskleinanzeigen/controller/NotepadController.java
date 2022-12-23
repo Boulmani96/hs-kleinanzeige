@@ -7,11 +7,12 @@ import de.hs.da.hskleinanzeigen.dtos.CreationNotepadDTO;
 import de.hs.da.hskleinanzeigen.dtos.GetNotepadDTO;
 import de.hs.da.hskleinanzeigen.dtos.NotepadDTO;
 import de.hs.da.hskleinanzeigen.mappers.NotepadMapper;
-import de.hs.da.hskleinanzeigen.repository.NotepadRepository;
+import de.hs.da.hskleinanzeigen.services.NotepadService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.SneakyThrows;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ import java.util.List;
 @RestController
 public class NotepadController {
     @Autowired
-    private NotepadRepository notepadRepository;
+    private NotepadService notepadService;
 
     @Autowired
     private NotepadMapper notepadMapper = Mappers.getMapper(NotepadMapper .class);;
@@ -40,7 +41,8 @@ public class NotepadController {
             @ApiResponse(responseCode = "400", description = "Invalid parameters", content = @Content)
     })
     @PutMapping("/api/users/{userId}/notepad")
-    public ResponseEntity<NotepadDTO> putNotepad(@RequestBody CreationNotepadDTO creationNotepadDTO, @PathVariable Integer userId){
+    public ResponseEntity<NotepadDTO> putNotepad(@RequestBody CreationNotepadDTO creationNotepadDTO, @PathVariable Integer userId)
+        throws Exception {
         if(creationNotepadDTO.getAdvertisementId() == null || userId == null || userId < 0 ||creationNotepadDTO.getNote() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -55,11 +57,11 @@ public class NotepadController {
         AD ad = notepadMapper.adDTOtoAd(advertisementController.getAdvertisementById(creationNotepadDTO.getAdvertisementId()).getBody());
 
         //Notepad already exists with the same user and advertisement => update
-        Notepad existsNotepad = notepadRepository.findByUser_idAndByAd_id(userId, creationNotepadDTO.getAdvertisementId());
+        Notepad existsNotepad = notepadService.findByUser_idAndByAd_id(userId, creationNotepadDTO.getAdvertisementId());
         if(existsNotepad != null){
             existsNotepad.setNote(creationNotepadDTO.getNote());
             existsNotepad.setCreated(LocalDateTime.now());
-            notepadRepository.save(existsNotepad);
+            notepadService.saveNotepad(existsNotepad);
             return new ResponseEntity<>(notepadMapper.notepadToNotepadDTO(existsNotepad), HttpStatus.OK);
         }
         //Notepad does not exists => add new Notepad
@@ -67,10 +69,11 @@ public class NotepadController {
         notepad.setUser(user);
         notepad.setAd(ad);
         notepad.setCreated(LocalDateTime.now());
-        notepadRepository.save(notepad);
+        notepadService.saveNotepad(notepad);
         return new ResponseEntity<>(notepadMapper.notepadToNotepadDTO(notepad), HttpStatus.OK);
     }
 
+    @SneakyThrows
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found Notepad", content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = GetNotepadDTO.class)) }),
@@ -88,7 +91,7 @@ public class NotepadController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        List<Notepad> notepadList = notepadRepository.findByUser_id(userId);
+        List<Notepad> notepadList = notepadService.findNotepadByUser_id(userId);
 
         // if no content
         if (notepadList.isEmpty()){
@@ -109,11 +112,11 @@ public class NotepadController {
         if(userId == null || adId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Notepad notepad = notepadRepository.findByUser_idAndByAd_id(userId, adId);
+        Notepad notepad = notepadService.findByUser_idAndByAd_id(userId, adId);
         if (notepad == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        notepadRepository.delete(notepad);
+        notepadService.deleteNotepad(notepad);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

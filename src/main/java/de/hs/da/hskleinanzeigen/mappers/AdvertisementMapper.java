@@ -16,10 +16,6 @@ public interface AdvertisementMapper {
 
     AdDTO adToAdDTO(AD ad);
 
-    AD adDTOtoAD(AdDTO adDTO);
-
-    CreationAdDTO CreationAdDTOtoAd(AD ad);
-
     AD creationAdDTOtoAd(CreationAdDTO creationAdDTO);
 
     UserDTO userToUserDTO (User user);
