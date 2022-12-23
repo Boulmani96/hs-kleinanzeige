@@ -1,5 +1,6 @@
 package de.hs.da.hskleinanzeigen.controller;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -8,18 +9,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.hamcrest.Matchers.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.dtos.CreationUserDTO;
 import de.hs.da.hskleinanzeigen.dtos.UserDTO;
 import de.hs.da.hskleinanzeigen.mappers.UserMapper;
-import de.hs.da.hskleinanzeigen.mappers.UserMapperImpl;
 import de.hs.da.hskleinanzeigen.repository.UserRepository;
 import de.hs.da.hskleinanzeigen.services.UserService;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +25,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;

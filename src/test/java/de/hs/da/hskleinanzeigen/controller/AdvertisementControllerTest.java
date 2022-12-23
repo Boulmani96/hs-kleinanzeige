@@ -124,7 +124,8 @@ class AdvertisementControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(creationAdDTO)))
         .andExpect(status().isCreated());
-  }@Test
+  }
+  @Test
   void testGetAdvertisements_Success() throws Exception {
     List<AD> data = new ArrayList<>();
     data.add(mock(AD.class));
