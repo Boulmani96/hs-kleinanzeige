@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-
 @Entity
 @Data
 @NoArgsConstructor //Will lead to an empty constructor generation.

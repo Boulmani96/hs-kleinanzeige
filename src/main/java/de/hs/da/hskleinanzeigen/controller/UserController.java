@@ -4,11 +4,16 @@ import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.dtos.CreationUserDTO;
 import de.hs.da.hskleinanzeigen.dtos.UserDTO;
 import de.hs.da.hskleinanzeigen.mappers.UserMapper;
-import de.hs.da.hskleinanzeigen.repository.UserRepository;
+import de.hs.da.hskleinanzeigen.mappers.UserMapperImpl;
+import de.hs.da.hskleinanzeigen.services.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import javax.validation.Valid;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,17 +24,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
 
     @Autowired
     private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
@@ -46,12 +54,13 @@ public class UserController {
                 creationUserDTO.getLastName() == null || creationUserDTO.getPhone() == null|| creationUserDTO.getLocation() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (userRepository.findByEmail(creationUserDTO.getEmail()) != null){
+        if (userService.findByEmail(creationUserDTO.getEmail()) != null){
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
+        userMapper = new UserMapperImpl();
         User user = userMapper.creationUserDTOToUser(creationUserDTO);
         user.setCreated(LocalDateTime.now());
-        userRepository.save(user);
+        userService.saveUser(user);
         return new ResponseEntity<>(userMapper.userToUserDTO(user), HttpStatus.CREATED);
     }
 
@@ -61,12 +70,12 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "No user was found with the given ID", content = @Content)
     })
     @GetMapping("/api/users/{id}")
-    public ResponseEntity<UserDTO> getUserByID(@PathVariable int id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if(optionalUser.isEmpty()){
+    public ResponseEntity<UserDTO> getUserByID(@PathVariable int id) throws Exception {
+        User optionalUser = userService.findUserById(id);
+        if(optionalUser== null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userMapper.userToUserDTO(optionalUser.get()), HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.userToUserDTO(optionalUser), HttpStatus.OK);
     }
 
     @ApiResponses(value = {
@@ -76,7 +85,7 @@ public class UserController {
     })
     @GetMapping("/api/users/email")
     public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) {
-        User user = userRepository.findByEmail(email);
+        User user = userService.findByEmail(email);
         if (user == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(userMapper.userToUserDTO(user), HttpStatus.OK);
@@ -94,10 +103,11 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         PageRequest pr = PageRequest.of(pageStart, pageSize, Sort.by("created"));
-        if (userRepository.findAll(pr).isEmpty()) {
+        if (userService.findAll(pr).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        Page<UserDTO> page = new PageImpl<>(userMapper.listUserToListUserDTO(userRepository.findAll(pr).getContent()));
+        Page<UserDTO> page = new PageImpl<>(userMapper.listUserToListUserDTO(
+            userService.findAll(pr).getContent()));
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
