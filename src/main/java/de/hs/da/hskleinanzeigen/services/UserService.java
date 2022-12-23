@@ -21,8 +21,8 @@ public class UserService {
     userRepository.save(user);
   }
 
-  public User findUserById(int id) throws Exception{
-   return userRepository.findById(id).orElseThrow(()->new Exception("No User Found"));
+  public User findUserById(int id) {
+   return userRepository.findById(id);
   }
 
   public Page<User> findAll(PageRequest pr) {

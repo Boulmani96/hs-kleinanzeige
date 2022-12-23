@@ -68,7 +68,7 @@ class UserServiceTest {
   @Test
   void testFindUserById() throws Exception {
     // Set up the mock to return the sample user when findById is called
-    when(mockRepo.findById(1)).thenReturn(java.util.Optional.of(sampleUser));
+    when(mockRepo.findById(1)).thenReturn(sampleUser);
 
     // Call the findUserById method on the UserService and store the result
     User result = userService.findUserById(1);
@@ -78,17 +78,6 @@ class UserServiceTest {
     assertEquals("john@example.com", result.getEmail());
     assertEquals("John", result.getFirstName());
     assertEquals("Doe", result.getLastName());
-  }
-  @Test
-  void testFindUserById_NotFound() {
-    // Set up the mock to return empty when findById is called
-    when(mockRepo.findById(1)).thenReturn(java.util.Optional.empty());
-
-    // Call the findUserById method on the UserService and store the result
-    Exception exception = assertThrows(Exception.class, () -> userService.findUserById(1));
-
-    // Make assertions about the returned exception
-    assertEquals("No User Found", exception.getMessage());
   }
   @Test
   void testFindAll() {

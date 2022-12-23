@@ -65,11 +65,11 @@ public class UserController {
     })
     @GetMapping("/api/users/{id}")
     public ResponseEntity<UserDTO> getUserByID(@PathVariable int id) throws Exception {
-        Optional<User> optionalUser = Optional.ofNullable(userService.findUserById(id));
-        if(optionalUser.isEmpty()){
+        User optionalUser = userService.findUserById(id);
+        if(optionalUser== null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userMapper.userToUserDTO(optionalUser.get()), HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.userToUserDTO(optionalUser), HttpStatus.OK);
     }
 
     @ApiResponses(value = {

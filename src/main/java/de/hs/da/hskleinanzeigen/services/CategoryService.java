@@ -18,7 +18,7 @@ public class CategoryService {
     categoryRepository.save(category);
   }
 
-  public Category findCategoryById(int id) throws Exception{
-    return categoryRepository.findById(id).orElseThrow(()->new Exception("No Category Found"));
+  public Category findCategoryById(int id) {
+    return categoryRepository.findById(id);
   }
 }
