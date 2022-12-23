@@ -59,7 +59,7 @@ public class UserTest {
     user1.setLastName("User");
     user1.setPhone("123-456-7890");
     user1.setLocation("Test City");
-    user1.setCreated(LocalDateTime.now());
+
 
     User user2 = new User();
     user2.setId(1);
@@ -69,7 +69,6 @@ public class UserTest {
     user2.setLastName("User");
     user2.setPhone("123-456-7890");
     user2.setLocation("Test City");
-    user2.setCreated(LocalDateTime.now());
 
     assertTrue(user1.equals(user2));
   }
@@ -109,7 +108,6 @@ public class UserTest {
     user1.setLastName("User");
     user1.setPhone("123-456-7890");
     user1.setLocation("Test City");
-    user1.setCreated(LocalDateTime.now());
 
     User user2 = new User();
     user2.setId(1);
@@ -119,7 +117,7 @@ public class UserTest {
     user2.setLastName("User");
     user2.setPhone("123-456-7890");
     user2.setLocation("Test City");
-    user2.setCreated(LocalDateTime.now());
+
 
     assertEquals(user1.hashCode(), user2.hashCode());
   }
