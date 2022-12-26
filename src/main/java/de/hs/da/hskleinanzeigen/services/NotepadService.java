@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class NotepadService {
+
   @Autowired
   private NotepadRepository notepadRepository ;
 
@@ -15,8 +16,8 @@ public class NotepadService {
     return notepadRepository.findByUser_idAndByAd_id(userId,advertisementId);
   }
 
-  public void saveNotepad(Notepad existsNotepad) {
-    notepadRepository.save(existsNotepad);
+  public Notepad saveNotepad(Notepad notepad) {
+    return notepadRepository.save(notepad);
   }
 
   public List<Notepad> findNotepadByUser_id(Integer userId) {
