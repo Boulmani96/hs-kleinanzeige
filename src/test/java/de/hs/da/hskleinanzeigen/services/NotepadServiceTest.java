@@ -36,6 +36,7 @@ class NotepadServiceTest {
   private Notepad sampleNotepad;
 
   private Notepad deletedNotepad;
+
   @BeforeEach
   void setUp() {
     Category sampleCategory = new Category();
@@ -66,6 +67,7 @@ class NotepadServiceTest {
     sampleNotepad.setAd(sampleAdvertisement);
     sampleNotepad.setCreated(LocalDateTime.now());
   }
+
   @Test
   void testFindByUser_idAndByAd_id() {
     // Set up the mock to return a sample notepad when findByUser_idAndByAd_id is called
@@ -102,7 +104,6 @@ class NotepadServiceTest {
     assertEquals(1, result.get(0).getUser().getId());
     assertEquals(1, result.get(0).getAd().getId());
   }
-
 
   @Test
   void testDeleteNotepad() {

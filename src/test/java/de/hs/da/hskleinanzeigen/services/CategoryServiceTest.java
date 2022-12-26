@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
 
@@ -56,10 +58,10 @@ class CategoryServiceTest {
   @Test
   void testFindCategoryById() throws Exception {
     // Set up the mock to return the sample category when findById is called
-    when(mockRepo.findById(1)).thenReturn(sampleCategory);
+    when(mockRepo.findById(1)).thenReturn(Optional.of(sampleCategory));
 
     // Call the findCategoryById method on the CategoryService and store the result
-    Category result = categoryService.findCategoryById(1);
+    Category result = categoryService.findCategoryById(1).get();
 
     // Make assertions about the returned value
     assertNotNull(result);

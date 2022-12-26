@@ -1,53 +1,46 @@
 package de.hs.da.hskleinanzeigen.controller;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.hs.da.hskleinanzeigen.domain.Category;
 import de.hs.da.hskleinanzeigen.dtos.CategoryDTO;
 import de.hs.da.hskleinanzeigen.dtos.CreationCategoryDTO;
 import de.hs.da.hskleinanzeigen.mappers.CategoryMapper;
-import de.hs.da.hskleinanzeigen.repository.CategoryRepository;
 import de.hs.da.hskleinanzeigen.services.CategoryService;
-import java.util.Optional;
-import lombok.With;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.util.Base64Utils;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CategoryController.class)
 @WithMockUser(username = "user", password = "user", roles = "user")
-class CategoryControllerTest {
+class CategoryControllerIT {
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
   private MockMvc mockMvc;
 
   @MockBean
   private CategoryService categoryService;
-  @MockBean
-  private CategoryRepository categoryRepository;
 
   @MockBean
   private CategoryMapper categoryMapper;
+
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
   private ObjectMapper objectMapper;
 
@@ -63,7 +56,7 @@ class CategoryControllerTest {
     mockCategory.setParent(new Category());
     when(categoryMapper.CreationCategoryDTOtoCategory(mockCreationCategoryDTO)).thenReturn(mockCategory);
     when(categoryService.findCategoryByName("Test Category")).thenReturn(null);
-    doNothing().when(categoryService).saveCategory(mockCategory);
+    when(categoryService.saveCategory(mockCategory)).thenReturn(mockCategory);
     CategoryDTO mockCategoryDTO = new CategoryDTO(1,"Test Category");
     mockCategoryDTO.setId(1);
     mockCategoryDTO.setName("Test Category");
@@ -88,7 +81,7 @@ class CategoryControllerTest {
     mockCategory.setParent(new Category());
     when(categoryMapper.CreationCategoryDTOtoCategory(mockCreationCategoryDTO)).thenReturn(mockCategory);
     when(categoryService.findCategoryByName("Test Category")).thenReturn(null);
-    doNothing().when(categoryService).saveCategory(mockCategory);
+    when(categoryService.saveCategory(mockCategory)).thenReturn(mockCategory);
     CategoryDTO mockCategoryDTO = new CategoryDTO(1,"Test Category");
     when(categoryMapper.categoryToCategoryDTO(mockCategory)).thenReturn(mockCategoryDTO);
 
@@ -108,8 +101,8 @@ class CategoryControllerTest {
     mockCategory.setParent(new Category());
     when(categoryMapper.CreationCategoryDTOtoCategory(mockCreationCategoryDTO)).thenReturn(mockCategory);
     when(categoryService.findCategoryByName("Test Category")).thenReturn(null);
-    doNothing().when(categoryService).saveCategory(mockCategory);
-    when(categoryService.findCategoryById(1)).thenReturn(null);
+    when(categoryService.saveCategory(mockCategory)).thenReturn(mockCategory);
+    when(categoryService.findCategoryById(1)).thenReturn(Optional.empty());
 
     // perform the request and assert the response
     mockMvc.perform(post("/api/categories").with(csrf())
@@ -130,7 +123,7 @@ class CategoryControllerTest {
     mockCategory.setParent(new Category());
     when(categoryMapper.CreationCategoryDTOtoCategory(mockCreationCategoryDTO)).thenReturn(mockCategory);
     when(categoryService.findCategoryByName("Test Category")).thenReturn(mockCategory);
-    doNothing().when(categoryService).saveCategory(mockCategory);
+    when(categoryService.saveCategory(mockCategory)).thenReturn(mockCategory);
     CategoryDTO mockCategoryDTO = new CategoryDTO(0,"Test Category");
     mockCategoryDTO.setId(0);
     mockCategoryDTO.setName("Test Category");
@@ -150,7 +143,7 @@ class CategoryControllerTest {
     mockCategory.setId(1);
     mockCategory.setName("TestCategory");
     Optional<Category> optionalMockCategory = Optional.of(mockCategory);
-    when(categoryService.findCategoryById(1)).thenReturn(mockCategory);
+    when(categoryService.findCategoryById(1)).thenReturn(Optional.of(mockCategory));
     CategoryDTO mockCategoryDTO = new CategoryDTO(1,"TestCategory");
     mockCategoryDTO.setId(1);
     mockCategoryDTO.setName("TestCategory");
@@ -168,7 +161,7 @@ class CategoryControllerTest {
   @Test
   void testGetCategoryById_NotFound() throws Exception {
     // mock the service and mapper methods
-    when(categoryService.findCategoryById(1)).thenReturn(null);
+    when(categoryService.findCategoryById(1)).thenReturn(Optional.empty());
 
     // perform the request and assert the response
     mockMvc.perform(get("/api/categories/1"))

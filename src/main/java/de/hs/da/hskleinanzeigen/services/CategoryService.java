@@ -5,6 +5,8 @@ import de.hs.da.hskleinanzeigen.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CategoryService {
   @Autowired
@@ -14,11 +16,11 @@ public class CategoryService {
     return categoryRepository.findByName(name);
   }
 
-  public void saveCategory(Category category) {
-    categoryRepository.save(category);
+  public Category saveCategory(Category category) {
+    return categoryRepository.save(category);
   }
 
-  public Category findCategoryById(int id) {
+  public Optional<Category> findCategoryById(int id) {
     return categoryRepository.findById(id);
   }
 }
