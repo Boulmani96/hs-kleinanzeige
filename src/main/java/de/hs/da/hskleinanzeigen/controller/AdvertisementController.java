@@ -47,8 +47,7 @@ public class AdvertisementController{
     })
     @PostMapping(path="/api/advertisements") // Map ONLY POST Requests
     @ResponseBody
-    public ResponseEntity<AdDTO> addNewAdvertisement (@Valid @RequestBody CreationAdDTO creationAdDTO)
-        throws Exception {
+    public ResponseEntity<AdDTO> addNewAdvertisement (@Valid @RequestBody CreationAdDTO creationAdDTO) {
         if(creationAdDTO.getType() == null || creationAdDTO.getCategory() == null
                 || creationAdDTO.getCategory().getId() == null || creationAdDTO.getTitle() == null
                 || creationAdDTO.getDescription() == null || creationAdDTO.getUser() == null
@@ -57,7 +56,7 @@ public class AdvertisementController{
         }
         // If Category or user does not exist
         if(categoryController.getCategoryByID(creationAdDTO.getCategory().getId()) == null
-            || userController.getUserByID(creationAdDTO.getUser().getId())== null){
+                || userController.getUserByID(creationAdDTO.getUser().getId())== null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -126,3 +125,4 @@ public class AdvertisementController{
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 }
+

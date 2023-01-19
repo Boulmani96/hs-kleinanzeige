@@ -12,9 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
-
 
   @Mock
   private CategoryRepository mockRepo;
@@ -30,6 +31,7 @@ class CategoryServiceTest {
     sampleCategory = new Category();
     sampleCategory.setName("Electronics");
   }
+
   @Test
   void testFindByName() {
     // Set up the mock to return the sample category when findByName is called
@@ -43,7 +45,6 @@ class CategoryServiceTest {
     assertEquals("Electronics", result.getName());
   }
 
-
   @Test
   void testSaveCategory() {
     // Call the saveCategory method on the CategoryService
@@ -56,27 +57,13 @@ class CategoryServiceTest {
   @Test
   void testFindCategoryById() throws Exception {
     // Set up the mock to return the sample category when findById is called
-    when(mockRepo.findById(1)).thenReturn(sampleCategory);
+    when(mockRepo.findById(1)).thenReturn(Optional.of(sampleCategory));
 
     // Call the findCategoryById method on the CategoryService and store the result
-    Category result = categoryService.findCategoryById(1);
+    Category result = categoryService.findCategoryById(1).get();
 
     // Make assertions about the returned value
     assertNotNull(result);
     assertEquals("Electronics", result.getName());
   }
-  /*
-  @Test
-  void testFindCategoryById_NotFound() {
-    // Set up the mock to return empty when findById is called
-    when(mockRepo.findById(1)).thenReturn(null);
-
-    // Call the findCategoryById method on the CategoryService and store the result
-    Exception exception = assertThrows(Exception.class, () -> categoryService.findCategoryById(1));
-
-    // Make assertions about the returned exception
-    assertEquals("No Category Found", exception.getMessage());
-  }
-
-   */
 }

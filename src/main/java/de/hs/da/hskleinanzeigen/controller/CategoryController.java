@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CategoryController {
-	@Autowired
+    @Autowired
     private CategoryService categoryService;
 
     @Autowired
@@ -38,16 +38,16 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid parameters", content = @Content)
     })
     // @ResponseBody means the returned String is the response, not a view name
-	@PostMapping(path="/api/categories" ) // Map ONLY POST Requests
+    @PostMapping(path="/api/categories" ) // Map ONLY POST Requests
     public ResponseEntity<CategoryDTO> addNewCategory(@Valid @RequestBody CreationCategoryDTO creationCategoryDTO)
-        throws Exception {
+            throws Exception {
         //category.getParent() == null || getCategoryByID(category.getParent().getID()).isEmpty()
         if(creationCategoryDTO.getName() == null){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         // check if parent category is available
         if (creationCategoryDTO.getParentId() > 0 && getCategoryByID(creationCategoryDTO.getParentId()).getBody() == null) {
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         // Check if the category already exists in database
         if(categoryService.findCategoryByName(creationCategoryDTO.getName()) != null){
@@ -65,8 +65,8 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "No category was found with the given id", content = @Content)
     })
     @GetMapping(path="/api/categories/{id}")
-    public ResponseEntity<CategoryDTO> getCategoryByID(@PathVariable int id) throws Exception {
-        Optional<Category> category = Optional.ofNullable(categoryService.findCategoryById(id));
+    public ResponseEntity<CategoryDTO> getCategoryByID(@PathVariable int id) {
+        Optional<Category> category = categoryService.findCategoryById(id);
         if(category.isEmpty()){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
@@ -84,12 +84,7 @@ public class CategoryController {
         if(category == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-       return new ResponseEntity<>(categoryMapper.categoryToCategoryDTO(category), HttpStatus.OK);
-    }
-
-    @GetMapping(path="/api/categories/all")
-    public String getHello() {
-
-        return "Hello";
+        return new ResponseEntity<>(categoryMapper.categoryToCategoryDTO(category), HttpStatus.OK);
     }
 }
+

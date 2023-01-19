@@ -3,7 +3,7 @@ package de.hs.da.hskleinanzeigen.repository;
 import static org.junit.Assert.*;
 
 import de.hs.da.hskleinanzeigen.domain.User;
-import de.hs.da.hskleinanzeigen.repository.UserRepository;
+
 import java.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserRepositoryTest {
+public class UserRepositoryIT {
 
   @Autowired
   private UserRepository userRepository;

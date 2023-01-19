@@ -1,14 +1,17 @@
 package de.hs.da.hskleinanzeigen.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor //Will lead to an empty constructor generation.
+@AllArgsConstructor
 @Table(name = "AD")
 public class AD {
     @Id
@@ -40,3 +43,4 @@ public class AD {
     @NotNull(message = "Created cannot be null")
     private LocalDateTime created;
 }
+

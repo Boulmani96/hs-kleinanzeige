@@ -153,5 +153,4 @@ class AdvertisementServiceTest {
     assertEquals(100, result.get(0).getPrice());
     assertEquals(1, result.get(0).getCategory().getId());
   }
-
 }

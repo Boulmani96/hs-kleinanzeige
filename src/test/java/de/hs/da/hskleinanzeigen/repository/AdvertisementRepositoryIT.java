@@ -6,9 +6,7 @@ import de.hs.da.hskleinanzeigen.domain.AD;
 import de.hs.da.hskleinanzeigen.domain.Category;
 import de.hs.da.hskleinanzeigen.domain.Type;
 import de.hs.da.hskleinanzeigen.domain.User;
-import de.hs.da.hskleinanzeigen.repository.AdvertisementRepository;
-import de.hs.da.hskleinanzeigen.repository.CategoryRepository;
-import de.hs.da.hskleinanzeigen.repository.UserRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.Test;
@@ -21,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AdvertisementRepositoryTests {
+public class AdvertisementRepositoryIT {
 
   @Autowired
   private AdvertisementRepository advertisementRepository;
