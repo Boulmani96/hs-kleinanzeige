@@ -68,7 +68,7 @@ class UserServiceTest {
   }
 
   @Test
-  void testFindUserById() throws Exception {
+  void testFindUserById() {
     // Set up the mock to return the sample user when findById is called
     when(mockRepo.findById(1)).thenReturn(Optional.of(sampleUser));
 
