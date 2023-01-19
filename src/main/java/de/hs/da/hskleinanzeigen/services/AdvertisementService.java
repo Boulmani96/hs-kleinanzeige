@@ -14,8 +14,8 @@ public class AdvertisementService {
   @Autowired
   private AdvertisementRepository advertisementRepository;
 
-  public AD saveAdvertisement(AD advertisement) {
-    return advertisementRepository.save(advertisement);
+  public void saveAdvertisement(AD advertisement) {
+    advertisementRepository.save(advertisement);
   }
 
   public Optional<AD> findADById(int id) {

@@ -10,8 +10,6 @@ import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -70,10 +68,10 @@ class UserServiceTest {
   @Test
   void testFindUserById() throws Exception {
     // Set up the mock to return the sample user when findById is called
-    when(mockRepo.findById(1)).thenReturn(Optional.of(sampleUser));
+    when(mockRepo.findById(1)).thenReturn(sampleUser);
 
     // Call the findUserById method on the UserService and store the result
-    User result = userService.findUserById(1).get();
+    User result = userService.findUserById(1);
 
     // Make assertions about the returned value
     assertNotNull(result);
@@ -81,7 +79,6 @@ class UserServiceTest {
     assertEquals("John", result.getFirstName());
     assertEquals("Doe", result.getLastName());
   }
-
   @Test
   void testFindAll() {
     // Create a Page of sample users to return from the mock Repository

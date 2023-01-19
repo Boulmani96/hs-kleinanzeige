@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import javax.validation.Valid;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     private UserService userService;
+
 
     @Autowired
     private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
@@ -70,12 +70,12 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "No user was found with the given ID", content = @Content)
     })
     @GetMapping("/api/users/{id}")
-    public ResponseEntity<UserDTO> getUserByID(@PathVariable int id){
-        Optional<User> optionalUser = userService.findUserById(id);
-        if(optionalUser.isEmpty()){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public ResponseEntity<UserDTO> getUserByID(@PathVariable int id) throws Exception {
+        User optionalUser = userService.findUserById(id);
+        if(optionalUser== null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userMapper.userToUserDTO(optionalUser.get()), HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.userToUserDTO(optionalUser), HttpStatus.OK);
     }
 
     @ApiResponses(value = {
@@ -106,7 +106,6 @@ public class UserController {
         if (userService.findAll(pr).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         Page<UserDTO> page = new PageImpl<>(userMapper.listUserToListUserDTO(
             userService.findAll(pr).getContent()));
         return new ResponseEntity<>(page, HttpStatus.OK);

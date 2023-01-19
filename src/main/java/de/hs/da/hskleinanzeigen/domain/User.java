@@ -1,6 +1,5 @@
 package de.hs.da.hskleinanzeigen.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
 @Entity
 @Data //That bundles the features of @ToString, @EqualsAndHashCode, @Getter/@Setter and @RequiredArgsConstructor
 @NoArgsConstructor //Will lead to an empty constructor generation.
-@AllArgsConstructor
 @Table(name = "USER")
 public class User {
     @Id
