@@ -65,8 +65,8 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "No category was found with the given id", content = @Content)
     })
     @GetMapping(path="/api/categories/{id}")
-    public ResponseEntity<CategoryDTO> getCategoryByID(@PathVariable int id) throws Exception {
-        Optional<Category> category = Optional.ofNullable(categoryService.findCategoryById(id));
+    public ResponseEntity<CategoryDTO> getCategoryByID(@PathVariable int id) {
+        Optional<Category> category = categoryService.findCategoryById(id);
         if(category.isEmpty()){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

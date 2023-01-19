@@ -12,12 +12,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.SneakyThrows;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,15 +41,14 @@ public class NotepadController {
             @ApiResponse(responseCode = "400", description = "Invalid parameters", content = @Content)
     })
     @PutMapping("/api/users/{userId}/notepad")
-    public ResponseEntity<NotepadDTO> putNotepad(@RequestBody CreationNotepadDTO creationNotepadDTO, @PathVariable Integer userId)
-        throws Exception {
+    public ResponseEntity<NotepadDTO> putNotepad(@RequestBody CreationNotepadDTO creationNotepadDTO, @PathVariable Integer userId) {
         if(creationNotepadDTO.getAdvertisementId() == null || userId == null || userId < 0 ||creationNotepadDTO.getNote() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         //if User or Advertisement does not exists
-        if(userController.getUserByID(userId).getBody() == null
-           || advertisementController.getAdvertisementById(creationNotepadDTO.getAdvertisementId()).getBody() == null){
+        if(userController.getUserByID(userId) == null
+           || advertisementController.getAdvertisementById(creationNotepadDTO.getAdvertisementId()) == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -73,7 +72,6 @@ public class NotepadController {
         return new ResponseEntity<>(notepadMapper.notepadToNotepadDTO(notepad), HttpStatus.OK);
     }
 
-    @SneakyThrows
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found Notepad", content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = GetNotepadDTO.class)) }),
@@ -82,12 +80,12 @@ public class NotepadController {
             @ApiResponse(responseCode = "204", description = "No Notepad was found", content = @Content)
     })
     @GetMapping("/api/users/{userId}/notepad")
-    public ResponseEntity<List<GetNotepadDTO>> getNotepad(@PathVariable Integer userId){
+    public ResponseEntity<List<GetNotepadDTO>> getNotepad(@PathVariable Integer userId) {
         if (userId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         // check if user exists or not
-        if(userController.getUserByID(userId).getBody() == null){
+        if(userController.getUserByID(userId) == null || userController.getUserByID(userId).getBody() == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
