@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.mapstruct.factory.Mappers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,6 +44,8 @@ public class UserController {
     @Autowired
     private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
+
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User Created", content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = UserDTO.class)) }),
@@ -61,6 +65,7 @@ public class UserController {
         User user = userMapper.creationUserDTOToUser(creationUserDTO);
         user.setCreated(LocalDateTime.now());
         userService.saveUser(user);
+        LOG.info("Adding user with ID {}.", user.getId());
         return new ResponseEntity<>(userMapper.userToUserDTO(user), HttpStatus.CREATED);
     }
 
@@ -75,6 +80,7 @@ public class UserController {
         if(optionalUser.isEmpty()){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+        LOG.info("Getting user with ID {}.", id);
         return new ResponseEntity<>(userMapper.userToUserDTO(optionalUser.get()), HttpStatus.OK);
     }
 
