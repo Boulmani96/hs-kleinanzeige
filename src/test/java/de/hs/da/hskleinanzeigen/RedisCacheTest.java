@@ -12,9 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.SocketUtils;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -22,6 +19,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -42,15 +40,14 @@ public class RedisCacheTest {
                     .withExposedPorts(6379);
 
     @BeforeAll
-    public static void startContainer(ConfigurableApplicationContext context) {
+    public static void startContainer() {
         redis.start();
-        String redisContainerIP = "spring.redis.host=" + redis.getContainerIpAddress();
-        String redisContainerPort = "spring.redis.port=" + redis.getFirstMappedPort();
-       // System.setProperty("spring.redis.host", redis.getHost());
-       // System.setProperty("spring.redis.port", redis.getFirstMappedPort().toString());
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,  redisContainerIP, redisContainerPort); // <- This is how you override the configuration in runtime.
+       // String redisContainerIP = "spring.redis.host=" + redis.getContainerIpAddress();
+       // String redisContainerPort = "spring.redis.port=" + redis.getFirstMappedPort();
+        System.setProperty("spring.redis.host", redis.getHost());
+        System.setProperty("spring.redis.port", redis.getFirstMappedPort().toString());
+       // TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context, redisContainerIP, redisContainerPort); // <- This is how you override the configuration in runtime.
     }
-
 
     @Test
     void getUser_returnCachedUser() throws JsonProcessingException {

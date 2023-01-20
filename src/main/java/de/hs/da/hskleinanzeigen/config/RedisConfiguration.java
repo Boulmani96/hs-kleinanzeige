@@ -10,20 +10,19 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfiguration {
+
+    /*
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-        //jedisConnectionFactory.getPoolConfig().setMaxIdle(30);
-        //jedisConnectionFactory.getPoolConfig().setMinIdle(10);
-        return jedisConnectionFactory;
+        return new JedisConnectionFactory();
     }
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         final RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisConnectionFactory());
-        template.setKeySerializer(new StringRedisSerializer() );
-        template.setHashValueSerializer(new GenericToStringSerializer<>(Object.class) );
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new GenericToStringSerializer<>(Object.class));
         template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
         return template;
     }
@@ -34,4 +33,6 @@ public class RedisConfiguration {
         template.setConnectionFactory(jedisConnectionFactory());
         return template;
     }
+
+     */
 }
