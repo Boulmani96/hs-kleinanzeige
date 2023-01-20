@@ -4,12 +4,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.services.UserService;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -22,6 +30,19 @@ public class RedisCacheTest {
 
     @MockBean
     UserService userService;
+
+    @Container
+    public static GenericContainer<?> redis =
+            new GenericContainer<>(DockerImageName.parse("redis:6.2.6"))
+                    .withExposedPorts(6379);
+
+    @BeforeAll
+    public static void startContainer() {
+        redis.start();
+        System.setProperty("spring.redis.host", redis.getHost());
+        System.setProperty("spring.redis.port", redis.getMappedPort(6379).toString());
+    }
+
 
     @Test
     void getUser_returnCachedUser() throws JsonProcessingException {
@@ -36,5 +57,10 @@ public class RedisCacheTest {
         Optional<User> mockUser = userService.findUserById(100);
 
         assertEquals(redisUser, mockUser.get());
+    }
+
+    @AfterAll
+    public static void stopContainer() {
+        redis.stop();
     }
 }
