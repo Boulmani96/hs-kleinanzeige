@@ -1,4 +1,4 @@
-package de.hs.da.hskleinanzeigen;
+package de.hs.da.hskleinanzeigen.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -6,3 +6,7 @@ spring:
     password: sa
   liquibase:
     change-log: classpath:db.changelog/changelog-master.xml
+  data:
+    redis:
+      repositories:
+        enabled: false
