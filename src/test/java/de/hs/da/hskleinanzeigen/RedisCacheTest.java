@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.SocketUtils;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -40,10 +42,13 @@ public class RedisCacheTest {
                     .withExposedPorts(6379);
 
     @BeforeAll
-    public static void startContainer() {
+    public static void startContainer(ConfigurableApplicationContext context) {
         redis.start();
-        System.setProperty("spring.redis.host", redis.getHost());
-        System.setProperty("spring.redis.port", redis.getFirstMappedPort().toString());
+        String redisContainerIP = "spring.redis.host=" + redis.getContainerIpAddress();
+        String redisContainerPort = "spring.redis.port=" + redis.getFirstMappedPort();
+       // System.setProperty("spring.redis.host", redis.getHost());
+       // System.setProperty("spring.redis.port", redis.getFirstMappedPort().toString());
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,  redisContainerIP, redisContainerPort); // <- This is how you override the configuration in runtime.
     }
 
 
