@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.util.SocketUtils;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -31,6 +32,8 @@ public class RedisCacheTest {
     @MockBean
     UserService userService;
 
+    static int redisPort = SocketUtils.findAvailableTcpPort();
+
     @Container
     public static GenericContainer<?> redis =
             new GenericContainer<>(DockerImageName.parse("redis:6.2.6"))
@@ -40,7 +43,7 @@ public class RedisCacheTest {
     public static void startContainer() {
         redis.start();
         System.setProperty("spring.redis.host", redis.getHost());
-        System.setProperty("spring.redis.port", redis.getMappedPort(6379).toString());
+        System.setProperty("spring.redis.port", redis.getFirstMappedPort().toString());
     }
 
 
