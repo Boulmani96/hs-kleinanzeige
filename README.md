@@ -15,8 +15,6 @@ selbst einzustellen.
 
 Ouassime Boulmani 767834 <br />
 El-houssine Taibi 764676 <br />
-Mohaned Mgaidi  767583 <br />
-Mohammad Al Msalmeh  767411
 
 ### gitlab
 - Workflow

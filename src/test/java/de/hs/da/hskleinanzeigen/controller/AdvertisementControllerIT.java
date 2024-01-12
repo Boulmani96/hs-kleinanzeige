@@ -70,7 +70,7 @@ class AdvertisementControllerIT {
 
   @BeforeEach
   void init() {
-    mockCategoryDTO = new CategoryDTO(1,"Electronics");
+     mockCategoryDTO = new CategoryDTO(1,"Electronics");
      mockUserDTO = new UserDTO(1, "test@example.com","John","Test","123-456-7890","Darmstadt");
      mockAd = new CreationAdDTO(OFFER.toString(), mockCategoryDTO, mockUserDTO, "Title", "Description", 100, "Darmstadt");
   }
@@ -238,14 +238,6 @@ class AdvertisementControllerIT {
     mockMvc.perform(get("/api/advertisements/{id}", mockAd.getId())
                     .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-            /*.andExpect(jsonPath("id", is(mockAd.getId())))
-            .andExpect(jsonPath("email", is(mockAd.getType())))
-            .andExpect(jsonPath("category", is(mockAd.getCategory())))
-            .andExpect(jsonPath("user", is(mockAd.getUser())))
-            .andExpect(jsonPath("title", is(mockAd.getTitle())))
-            .andExpect(jsonPath("description", is(mockAd.getDescription())))
-            .andExpect(jsonPath("price", is(mockAd.getPrice())))
-            .andExpect(jsonPath("location", is(mockAd.getLocation())));*/
   }
 
   @Test

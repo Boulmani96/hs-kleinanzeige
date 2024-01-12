@@ -23,11 +23,12 @@ import java.util.List;
 
 @RestController
 public class NotepadController {
+
     @Autowired
     private NotepadService notepadService;
 
     @Autowired
-    private NotepadMapper notepadMapper = Mappers.getMapper(NotepadMapper .class);
+    private NotepadMapper notepadMapper = Mappers.getMapper(NotepadMapper.class);
 
     @Autowired
     private UserController userController;
@@ -42,7 +43,7 @@ public class NotepadController {
     })
     @PutMapping("/api/users/{userId}/notepad")
     public ResponseEntity<NotepadDTO> putNotepad(@RequestBody CreationNotepadDTO creationNotepadDTO, @PathVariable Integer userId) {
-        if(creationNotepadDTO.getAdvertisementId() == null || userId == null || userId < 0 ||creationNotepadDTO.getNote() == null){
+        if(creationNotepadDTO.getAdvertisementId() == null || userId == null || userId < 0 || creationNotepadDTO.getNote() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -55,7 +56,7 @@ public class NotepadController {
         User user = notepadMapper.userDTOtoUser(userController.getUserByID(userId).getBody());
         AD ad = notepadMapper.adDTOtoAd(advertisementController.getAdvertisementById(creationNotepadDTO.getAdvertisementId()).getBody());
 
-        //Notepad already exists with the same user and advertisement => update
+        // Notepad already exists with the same user and advertisement => update
         Notepad existsNotepad = notepadService.findByUser_idAndByAd_id(userId, creationNotepadDTO.getAdvertisementId());
         if(existsNotepad != null){
             existsNotepad.setNote(creationNotepadDTO.getNote());
@@ -63,7 +64,8 @@ public class NotepadController {
             notepadService.saveNotepad(existsNotepad);
             return new ResponseEntity<>(notepadMapper.notepadToNotepadDTO(existsNotepad), HttpStatus.OK);
         }
-        //Notepad does not exists => add new Notepad
+
+        // Notepad does not exists => add new Notepad
         Notepad notepad = notepadMapper.creationNotepadDTOtoNotepad(creationNotepadDTO);
         notepad.setUser(user);
         notepad.setAd(ad);

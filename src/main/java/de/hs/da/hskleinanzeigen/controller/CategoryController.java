@@ -24,12 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CategoryController {
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @Autowired
-    private CategoryMapper categoryMapper = Mappers.getMapper(CategoryMapper.class);
+    private final CategoryMapper categoryMapper = Mappers.getMapper(CategoryMapper.class);
 
+    @Autowired
+    public CategoryController(CategoryService categoryService){
+        this.categoryService = categoryService;
+    }
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Category Created", content = { @Content(mediaType = "application/json",
@@ -39,24 +42,19 @@ public class CategoryController {
     })
     // @ResponseBody means the returned String is the response, not a view name
     @PostMapping(path="/api/categories" ) // Map ONLY POST Requests
-    public ResponseEntity<CategoryDTO> addNewCategory(@Valid @RequestBody CreationCategoryDTO creationCategoryDTO)
-            throws Exception {
-        //category.getParent() == null || getCategoryByID(category.getParent().getID()).isEmpty()
-        if(creationCategoryDTO.getName() == null){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> addNewCategory(@Valid @RequestBody CreationCategoryDTO creationCategoryDTO) {
         // check if parent category is available
         if (creationCategoryDTO.getParentId() > 0 && getCategoryByID(creationCategoryDTO.getParentId()).getBody() == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         // Check if the category already exists in database
         if(categoryService.findCategoryByName(creationCategoryDTO.getName()) != null){
-            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Category with the name "+creationCategoryDTO.getName()+" already exits", HttpStatus.CONFLICT);
         }
 
         Category category = categoryMapper.CreationCategoryDTOtoCategory(creationCategoryDTO);
         categoryService.saveCategory(category);
-        return new ResponseEntity<>(categoryMapper.categoryToCategoryDTO(category), HttpStatus.CREATED);
+        return new ResponseEntity<>(categoryMapper.categoryToCategoryDTO(category).toString(), HttpStatus.CREATED);
     }
 
     @ApiResponses(value = {
@@ -87,4 +85,3 @@ public class CategoryController {
         return new ResponseEntity<>(categoryMapper.categoryToCategoryDTO(category), HttpStatus.OK);
     }
 }
-

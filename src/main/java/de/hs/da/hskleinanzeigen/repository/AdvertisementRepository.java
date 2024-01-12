@@ -23,5 +23,5 @@ public interface AdvertisementRepository extends JpaRepository<AD, Integer>, Cru
     List<AD> findByCategory_id(int category,  Pageable pageable);
 
     @Query("from AD where Price between :priceFrom and :priceTo")
-    List<AD> findByPriceFromTo(@Param("priceFrom") int priceFrom,@Param("priceTo") int priceTo,  Pageable pageable);
+    List<AD> findByPriceFromTo(@Param("priceFrom") int priceFrom, @Param("priceTo") int priceTo, Pageable pageable);
 }

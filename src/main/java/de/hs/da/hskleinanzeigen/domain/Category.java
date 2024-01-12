@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@NoArgsConstructor //Will lead to an empty constructor generation.
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "CATEGORY")
 public class Category {

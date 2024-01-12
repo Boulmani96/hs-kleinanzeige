@@ -1,12 +1,11 @@
 package de.hs.da.hskleinanzeigen.dtos;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class CreationAdDTO {
     @NotNull(message = "Type cannot be null")
@@ -24,7 +23,7 @@ public class CreationAdDTO {
     @NotNull(message = "Description cannot be null")
     private String description;
 
-    private int price;
+    private Integer price;
 
     private String location;
 }

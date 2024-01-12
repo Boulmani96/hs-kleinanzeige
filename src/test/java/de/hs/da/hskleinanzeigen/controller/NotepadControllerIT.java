@@ -9,9 +9,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +23,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
+@WebMvcTest(NotepadController.class)
+@WithMockUser(username = "user", password = "user", roles = "user")
 public class NotepadControllerIT {
 
-  @Mock
+  @MockBean
   private NotepadService notepadService;
 
-  @Mock
+  @MockBean
   private NotepadMapper notepadMapper;
 
-  @Mock
+  @MockBean
   private UserController userController;
 
-  @Mock
+  @MockBean
   private AdvertisementController advertisementController;
 
   @InjectMocks

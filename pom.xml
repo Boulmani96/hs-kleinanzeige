@@ -313,16 +313,10 @@
 
     <developers>
         <developer>
-            <name>Mohaned Mgaidi</name>
-        </developer>
-        <developer>
             <name>Ouassime Boulmani</name>
         </developer>
         <developer>
             <name>Taibi El-Houssine</name>
-        </developer>
-        <developer>
-            <name>Mohammad Al Msalmeh</name>
         </developer>
     </developers>
 </project>

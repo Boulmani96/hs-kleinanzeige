@@ -38,8 +38,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
+
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController (UserService userService){
+        this.userService = userService;
+    }
 
     @Autowired
     private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
@@ -54,10 +59,6 @@ public class UserController {
     })
     @PostMapping(path="/api/users")
     public ResponseEntity<UserDTO> addNewUser(@Valid @RequestBody CreationUserDTO creationUserDTO) {
-        if(creationUserDTO.getEmail() == null || creationUserDTO.getFirstName() == null|| creationUserDTO.getPassword() == null ||
-                creationUserDTO.getLastName() == null || creationUserDTO.getPhone() == null|| creationUserDTO.getLocation() == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         if (userService.findByEmail(creationUserDTO.getEmail()) != null){
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }

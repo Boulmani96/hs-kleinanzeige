@@ -1,13 +1,17 @@
 package de.hs.da.hskleinanzeigen.dtos;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Data
 @AllArgsConstructor
 public class CreationCategoryDTO {
+    @NotBlank(message = "Name cannot be empty")
+    @NotNull(message = "Name cannot be null")
     private String name;
+
     private int parentId;
 }
