@@ -11,8 +11,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AdvertisementService {
+
+  private final AdvertisementRepository advertisementRepository;
+
   @Autowired
-  private AdvertisementRepository advertisementRepository;
+  public AdvertisementService(AdvertisementRepository advertisementRepository){
+    this.advertisementRepository = advertisementRepository;
+  }
 
   public AD saveAdvertisement(AD advertisement) {
     return advertisementRepository.save(advertisement);

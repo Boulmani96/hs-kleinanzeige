@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,14 +34,14 @@ public class AdvertisementController{
 
     private final UserController userController;
 
-    @Autowired
-    private AdvertisementMapper advertisementMapper = Mappers.getMapper(AdvertisementMapper.class);
+    private final AdvertisementMapper advertisementMapper;
 
     @Autowired
-    public AdvertisementController(AdvertisementService advertisementService, CategoryController categoryController, UserController userController){
+    public AdvertisementController(AdvertisementService advertisementService, CategoryController categoryController, UserController userController, AdvertisementMapper advertisementMapper){
         this.advertisementService = advertisementService;
         this.categoryController = categoryController;
         this.userController = userController;
+        this.advertisementMapper = advertisementMapper;
     }
 
     @ApiResponses(value = {

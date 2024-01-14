@@ -4,18 +4,11 @@ import de.hs.da.hskleinanzeigen.domain.User;
 import de.hs.da.hskleinanzeigen.dtos.CreationUserDTO;
 import de.hs.da.hskleinanzeigen.dtos.UserDTO;
 import de.hs.da.hskleinanzeigen.mappers.UserMapper;
-import de.hs.da.hskleinanzeigen.mappers.UserMapperImpl;
 import de.hs.da.hskleinanzeigen.services.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import javax.validation.Valid;
-import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,27 +20,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    public UserController (UserService userService){
-        this.userService = userService;
-    }
+    private final UserMapper userMapper;
 
     @Autowired
-    private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+    public UserController (UserService userService, UserMapper userMapper){
+        this.userService = userService;
+        this.userMapper = userMapper;
+    }
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -62,7 +54,6 @@ public class UserController {
         if (userService.findByEmail(creationUserDTO.getEmail()) != null){
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        userMapper = new UserMapperImpl();
         User user = userMapper.creationUserDTOToUser(creationUserDTO);
         user.setCreated(LocalDateTime.now());
         userService.saveUser(user);

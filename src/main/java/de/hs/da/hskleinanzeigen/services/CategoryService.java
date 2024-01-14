@@ -9,8 +9,12 @@ import java.util.Optional;
 @Service
 public class CategoryService {
 
+  private final CategoryRepository categoryRepository;
+
   @Autowired
-  private CategoryRepository categoryRepository;
+  public CategoryService(CategoryRepository categoryRepository){
+    this.categoryRepository = categoryRepository;
+  }
 
   public Category findCategoryByName(String name)  {
     return categoryRepository.findByName(name);
