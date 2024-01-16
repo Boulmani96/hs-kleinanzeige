@@ -37,7 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(username = "user", password = "user", roles = "user")
 class UserControllerIT {
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
   private MockMvc mockMvc;
 
@@ -50,7 +49,6 @@ class UserControllerIT {
   @MockBean
   private UserRepository userRepository;
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
   private ObjectMapper objectMapper;
 

@@ -1,18 +1,14 @@
 package de.hs.da.hskleinanzeigen.repository;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import de.hs.da.hskleinanzeigen.domain.Category;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import javax.sql.DataSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -21,26 +17,20 @@ public class CategoryRepositoryIT {
   @Autowired
   private CategoryRepository categoryRepository;
 
-  @Autowired
-  private DataSource dataSource;
-
   @Test
-  public void testSaveCategory() throws SQLException {
+  public void testSaveCategory() {
     // Create a new category
     Category category = new Category();
     category.setName("Test Category");
     categoryRepository.save(category);
 
     // Retrieve the saved category from the database
-    Connection connection = dataSource.getConnection();
-    Statement statement = connection.createStatement();
-    ResultSet resultSet = statement.executeQuery("SELECT * FROM CATEGORY WHERE name = 'Test Category'");
-    resultSet.next();
-    String name = resultSet.getString("name");
+    Category category1 = categoryRepository.findByName(category.getName());
 
     // Assert that the retrieved category matches the expected values
-    assertEquals("Test Category", name);
+    assertEquals("Test Category", category1.getName());
   }
+
   @Test
   public void testFindByName() {
     // Set up test data

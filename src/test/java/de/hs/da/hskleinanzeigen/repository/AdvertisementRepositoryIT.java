@@ -23,8 +23,10 @@ public class AdvertisementRepositoryIT {
 
   @Autowired
   private AdvertisementRepository advertisementRepository;
+
   @Autowired
   private CategoryRepository categoryRepository;
+
   @Autowired
   private UserRepository userRepository;
 
@@ -33,6 +35,7 @@ public class AdvertisementRepositoryIT {
     // Set up test data
     Category category = new Category();
     category.setName("Test Category 1");
+
     User user = new User();
     user.setFirstName("John");
     user.setLastName("Doe");
@@ -40,8 +43,9 @@ public class AdvertisementRepositoryIT {
     user.setCreated(LocalDateTime.now());
     user.setEmail("test@example.com1");
     userRepository.save(user);
-// Set values for the category object
-    category = categoryRepository.save(category);
+
+    // Set values for the category object
+    categoryRepository.save(category);
 
     AD ad = new AD();
     ad.setType(Type.OFFER);
@@ -49,7 +53,7 @@ public class AdvertisementRepositoryIT {
     ad.setUser(user);
     ad.setTitle("Test Ad");
     ad.setDescription("This is a test ad");
-    ad.setCreated(LocalDateTime.parse("2022-12-19T23:44:07.619800100"));
+    ad.setCreated(LocalDateTime.now());
     advertisementRepository.save(ad);
 
     // Invoke the code being tested
@@ -58,6 +62,6 @@ public class AdvertisementRepositoryIT {
 
     // Verify the results
     assertNotNull(result);
-    //assertTrue(result.contains(ad));
+    assertTrue(result.contains(ad));
   }
 }

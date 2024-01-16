@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CategoryController.class)
 @WithMockUser(username = "user", password = "user", roles = "user")
 class CategoryControllerIT {
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -38,7 +38,6 @@ class CategoryControllerIT {
   @MockBean
   private CategoryMapper categoryMapper;
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
   private ObjectMapper objectMapper;
 
@@ -46,15 +45,14 @@ class CategoryControllerIT {
   void testAddNewCategory_Success() throws Exception {
     // mock the service and mapper methods
     CreationCategoryDTO mockCreationCategoryDTO = new CreationCategoryDTO("Test Category",0);
-    mockCreationCategoryDTO.setName("Test Category");
-    mockCreationCategoryDTO.setParentId(0);
     Category mockCategory = new Category();
     mockCategory.setId(1);
     mockCategory.setName("Test Category");
-    mockCategory.setParent(new Category());
+
     when(categoryMapper.CreationCategoryDTOtoCategory(mockCreationCategoryDTO)).thenReturn(mockCategory);
     when(categoryService.findCategoryByName("Test Category")).thenReturn(null);
     when(categoryService.saveCategory(mockCategory)).thenReturn(mockCategory);
+
     CategoryDTO mockCategoryDTO = new CategoryDTO(1,"Test Category");
     mockCategoryDTO.setId(1);
     mockCategoryDTO.setName("Test Category");
@@ -74,10 +72,11 @@ class CategoryControllerIT {
     CreationCategoryDTO mockCreationCategoryDTO = new CreationCategoryDTO("Test Category",1);
     mockCreationCategoryDTO.setName(null);
     mockCreationCategoryDTO.setParentId(1);
+
     Category mockCategory = new Category();
     mockCategory.setId(1);
     mockCategory.setName("Test Category");
-    mockCategory.setParent(new Category());
+
     when(categoryMapper.CreationCategoryDTOtoCategory(mockCreationCategoryDTO)).thenReturn(mockCategory);
     when(categoryService.findCategoryByName("Test Category")).thenReturn(null);
     when(categoryService.saveCategory(mockCategory)).thenReturn(mockCategory);
@@ -115,18 +114,17 @@ class CategoryControllerIT {
   void testAddNewCategory_Conflict() throws Exception {
     // mock the service and mapper methods
     CreationCategoryDTO mockCreationCategoryDTO = new CreationCategoryDTO("Test Category",0);
-    mockCreationCategoryDTO.setName("Test Category");
-    mockCreationCategoryDTO.setParentId(0);
+
     Category mockCategory = new Category();
     mockCategory.setId(1);
     mockCategory.setName("Test Category");
-    mockCategory.setParent(new Category());
+
     when(categoryMapper.CreationCategoryDTOtoCategory(mockCreationCategoryDTO)).thenReturn(mockCategory);
     when(categoryService.findCategoryByName("Test Category")).thenReturn(mockCategory);
     when(categoryService.saveCategory(mockCategory)).thenReturn(mockCategory);
+
     CategoryDTO mockCategoryDTO = new CategoryDTO(0,"Test Category");
-    mockCategoryDTO.setId(0);
-    mockCategoryDTO.setName("Test Category");
+
     when(categoryMapper.categoryToCategoryDTO(mockCategory)).thenReturn(mockCategoryDTO);
 
     // perform the request and assert the response
@@ -142,11 +140,11 @@ class CategoryControllerIT {
     Category mockCategory = new Category();
     mockCategory.setId(1);
     mockCategory.setName("TestCategory");
-    Optional<Category> optionalMockCategory = Optional.of(mockCategory);
+
     when(categoryService.findCategoryById(1)).thenReturn(Optional.of(mockCategory));
+
     CategoryDTO mockCategoryDTO = new CategoryDTO(1,"TestCategory");
-    mockCategoryDTO.setId(1);
-    mockCategoryDTO.setName("TestCategory");
+
     when(categoryMapper.categoryToCategoryDTO(mockCategory)).thenReturn(mockCategoryDTO);
 
     // perform the request and assert the response
@@ -155,7 +153,6 @@ class CategoryControllerIT {
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.id").value(1))
         .andExpect(jsonPath("$.name").value("TestCategory"));
-
   }
 
   @Test
@@ -174,10 +171,11 @@ class CategoryControllerIT {
     Category mockCategory = new Category();
     mockCategory.setId(1);
     mockCategory.setName("TestCategory");
+
     when(categoryService.findCategoryByName("TestCategory")).thenReturn(mockCategory);
+
     CategoryDTO mockCategoryDTO = new CategoryDTO(1,"TestCategory");
-    mockCategoryDTO.setId(1);
-    mockCategoryDTO.setName("TestCategory");
+
     when(categoryMapper.categoryToCategoryDTO(mockCategory)).thenReturn(mockCategoryDTO);
 
     // perform the request and assert the response

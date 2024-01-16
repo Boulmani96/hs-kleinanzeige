@@ -35,8 +35,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "409", description = "Category already exists", content = @Content),
             @ApiResponse(responseCode = "400", description = "Invalid parameters", content = @Content)
     })
-    // @ResponseBody means the returned String is the response, not a view name
-    @PostMapping(path="/api/categories" ) // Map ONLY POST Requests
+    @PostMapping(path="/api/categories")
     public ResponseEntity<String> addNewCategory(@Valid @RequestBody CreationCategoryDTO creationCategoryDTO) {
         // check if parent category is available
         if (creationCategoryDTO.getParentId() > 0 && getCategoryByID(creationCategoryDTO.getParentId()).getBody() == null) {
