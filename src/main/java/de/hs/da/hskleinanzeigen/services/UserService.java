@@ -29,7 +29,7 @@ public class UserService {
     return userRepository.save(user);
   }
 
-  @Cacheable(value = "Users", key = "#id")
+  @Cacheable(value = "users", key = "#id")
   public Optional<User> findUserById(int id) {
     return userRepository.findById(id);
   }

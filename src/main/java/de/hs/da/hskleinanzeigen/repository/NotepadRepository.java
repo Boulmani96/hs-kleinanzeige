@@ -12,6 +12,6 @@ import java.util.List;
 public interface NotepadRepository extends JpaRepository<Notepad, Integer> {
     List<Notepad> findByUser_id(Integer userId);
 
-    @Query("from Notepad n where n.user.id = ?1 AND n.ad.id = ?2 ")
+    @Query("from Notepad n where n.user.id = ?1 AND n.ad.id = ?2")
     Notepad findByUser_idAndByAd_id(@PathVariable Integer userId, @PathVariable Integer adId);
 }
