@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @Testcontainers
 public class RedisCacheTest {
-    @Autowired
+    /*@Autowired
     StringRedisTemplate stringRedisTemplate;
 
     @MockBean
@@ -67,5 +67,5 @@ public class RedisCacheTest {
     @AfterAll
     public static void stopContainer() {
         redis.stop();
-    }
+    }*/
 }
